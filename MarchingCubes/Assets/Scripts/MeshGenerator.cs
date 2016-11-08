@@ -42,12 +42,13 @@ public class MeshGenerator : MonoBehaviour {
             if (LookupTables.SFaces[i] != -1) {
                 cubeMeshData[i - (caseValue * 15)] = LookupTables.SFaces[i];
             } else {
-                cubeMeshData[i - (caseValue * 15)] = 0;
+                cubeMeshData[i - (caseValue * 15)] = -1;
             }
         }
 
         for (int i = 0; i < cubeMeshData.Length; i++) {
-            edgeNodes[i] = cube.edgeNodes[cubeMeshData[i]];
+            if (cubeMeshData[i] != -1)
+                edgeNodes[i] = cube.edgeNodes[cubeMeshData[i]];
             //Debug.Log(cubeMeshData[i]);
         }
 
@@ -57,18 +58,24 @@ public class MeshGenerator : MonoBehaviour {
     void MeshFromPoints(params Node[] points) {
         AssignVertices(points);
 
-        CreateTriangle(points[0], points[1], points[2]);
-        CreateTriangle(points[3], points[4], points[5]);
-        CreateTriangle(points[6], points[7], points[8]);
-        CreateTriangle(points[9], points[10], points[11]);
+        if (points[0] != null)
+            CreateTriangle(points[0], points[1], points[2]);
+        if (points[3] != null)
+            CreateTriangle(points[3], points[4], points[5]);
+        if (points[6] != null)
+            CreateTriangle(points[6], points[7], points[8]);
+        if (points[9] != null)
+            CreateTriangle(points[9], points[10], points[11]);
     }
 
     void AssignVertices(Node[] points) {
         for (int i = 0; i < points.Length; i++) {
             //Debug.Log(vertices.Count);
-            if (points[i].vertexIndex == -1) {
-                points[i].vertexIndex = vertices.Count;
-                vertices.Add(points[i].pos);
+            if (points[i] != null) {
+                if (points[i].vertexIndex == -1) {
+                    points[i].vertexIndex = vertices.Count;
+                    vertices.Add(points[i].pos);
+                }
             }
             //Debug.Log(points[i].vertexIndex);
         }

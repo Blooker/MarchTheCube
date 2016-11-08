@@ -65,9 +65,9 @@ public class MapGenerator : MonoBehaviour {
                 for (int z = 0; z < depth; z++) {
                     int neighbourWallTiles = GetSurroundingWallCount(x, y, z);
                     //Debug.Log(neighbourWallTiles);
-                    if (neighbourWallTiles > 13) {
+                    if (neighbourWallTiles > 14) {
                         map[x, y, z] = 1;
-                    } else if (neighbourWallTiles < 13) {
+                    } else if (neighbourWallTiles < 12) {
                         map[x, y, z] = 0;
                     }
                 }
