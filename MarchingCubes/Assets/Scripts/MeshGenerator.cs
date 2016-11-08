@@ -1,26 +1,97 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MeshGenerator : MonoBehaviour {
 
     public CubeGrid cubeGrid;
+    List<Vector3> vertices;
+    List<int> triangles;
 
-    public void GenerateMesh (int[,,] map, float cubeSize) {
+    public void GenerateMesh(int[,,] map, float cubeSize) {
         cubeGrid = new CubeGrid(map, cubeSize);
+
+        vertices = new List<Vector3>();
+        triangles = new List<int>();
+
+        for (int x = 0; x < cubeGrid.cubes.GetLength(0); x++) {
+            for (int y = 0; y < cubeGrid.cubes.GetLength(1); y++) {
+                for (int z = 0; z < cubeGrid.cubes.GetLength(2); z++) {
+                    TriangluateCube(cubeGrid.cubes[x, y, z]);
+                }
+            }
+        }
+
+        Mesh mesh = new Mesh();
+        GetComponent<MeshFilter>().mesh = mesh;
+
+        Debug.Log(vertices.Count);
+
+        mesh.vertices = vertices.ToArray();
+        mesh.triangles = triangles.ToArray();
+        mesh.RecalculateNormals();
     }
 
-    void OnDrawGizmos () {
+    void TriangluateCube(Cube cube) {
+        cube.SetCaseValue();
+        int caseValue = 255 - cube.caseValue;
+        int[] cubeMeshData = new int[12];
+        Node[] edgeNodes = new Node[12];
+
+        for (int i = caseValue * 15; i < (caseValue * 15) + 12; i++) {
+            if (LookupTables.SFaces[i] != -1) {
+                cubeMeshData[i - (caseValue * 15)] = LookupTables.SFaces[i];
+            } else {
+                cubeMeshData[i - (caseValue * 15)] = 0;
+            }
+        }
+
+        for (int i = 0; i < cubeMeshData.Length; i++) {
+            edgeNodes[i] = cube.edgeNodes[cubeMeshData[i]];
+            //Debug.Log(cubeMeshData[i]);
+        }
+
+        MeshFromPoints(edgeNodes);
+    }
+
+    void MeshFromPoints(params Node[] points) {
+        AssignVertices(points);
+
+        CreateTriangle(points[0], points[1], points[2]);
+        CreateTriangle(points[3], points[4], points[5]);
+        CreateTriangle(points[6], points[7], points[8]);
+        CreateTriangle(points[9], points[10], points[11]);
+    }
+
+    void AssignVertices(Node[] points) {
+        for (int i = 0; i < points.Length; i++) {
+            //Debug.Log(vertices.Count);
+            if (points[i].vertexIndex == -1) {
+                points[i].vertexIndex = vertices.Count;
+                vertices.Add(points[i].pos);
+            }
+            //Debug.Log(points[i].vertexIndex);
+        }
+    }
+
+    void CreateTriangle(Node a, Node b, Node c) {
+        triangles.Add(a.vertexIndex);
+        triangles.Add(b.vertexIndex);
+        triangles.Add(c.vertexIndex);
+    }
+
+    /*void OnDrawGizmos () {
         if (cubeGrid != null) {
-            /*for (int x = 0; x < cubeGrid.controlNodes.GetLength(0); x++) {
-                for (int y = 0; y < cubeGrid.controlNodes.GetLength(1); y++) {
-                    for (int z = 0; z < cubeGrid.controlNodes.GetLength(2); z++) {
+            //for (int x = 0; x < cubeGrid.controlNodes.GetLength(0); x++) {
+                //for (int y = 0; y < cubeGrid.controlNodes.GetLength(1); y++) {
+                    //for (int z = 0; z < cubeGrid.controlNodes.GetLength(2); z++) {
 
-                        Gizmos.color = (cubeGrid.controlNodes[x,y,z].active) ? Color.black : Color.white;
-                        Gizmos.DrawCube(cubeGrid.controlNodes[x,y,z].pos, Vector3.one * .4f);
+                        //Gizmos.color = (cubeGrid.controlNodes[x,y,z].active) ? Color.black : Color.white;
+                        //Gizmos.DrawCube(cubeGrid.controlNodes[x,y,z].pos, Vector3.one * .4f);
 
-                    }
-                }
-            }*/
+                    //}
+                //}
+            //}
 
             for (int x = 0; x < cubeGrid.cubes.GetLength(0); x++) {
                 for (int y = 0; y < cubeGrid.cubes.GetLength(1); y++) {
@@ -45,7 +116,7 @@ public class MeshGenerator : MonoBehaviour {
                 }
             }
         }
-    }   
+    }*/
 
     public class CubeGrid {
         public Cube[,,] cubes;
@@ -307,6 +378,7 @@ public class MeshGenerator : MonoBehaviour {
     public class Cube {
         public ControlNode[] controlNodes = new ControlNode[8];
         public Node[] edgeNodes = new Node[12];
+        public int caseValue;
 
         public Cube (   ControlNode v0, ControlNode v1, ControlNode v2, ControlNode v3,
                         ControlNode v4, ControlNode v5, ControlNode v6, ControlNode v7,
@@ -335,10 +407,39 @@ public class MeshGenerator : MonoBehaviour {
             edgeNodes[10] = e10;
             edgeNodes[11] = e11;
         }
+
+        public void SetCaseValue() {
+            caseValue = 0;
+
+            if (controlNodes[0].active)
+                caseValue += 1;
+
+            if (controlNodes[1].active)
+                caseValue += 2;
+
+            if (controlNodes[2].active)
+                caseValue += 4;
+
+            if (controlNodes[3].active)
+                caseValue += 8;
+
+            if (controlNodes[4].active)
+                caseValue += 16;
+
+            if (controlNodes[5].active)
+                caseValue += 32;
+
+            if (controlNodes[6].active)
+                caseValue += 64;
+
+            if (controlNodes[7].active)
+                caseValue += 128;
+        }
     }
 
     public class Node {
         public Vector3 pos;
+        public int vertexIndex = -1;
 
         public Node (Vector3 _pos) {
             pos = _pos;
