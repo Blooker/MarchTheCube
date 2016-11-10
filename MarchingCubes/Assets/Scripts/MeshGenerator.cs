@@ -23,13 +23,15 @@ public class MeshGenerator : MonoBehaviour {
         }
 
         Mesh mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
-
+        MeshFilter mf = GetComponent<MeshFilter>();
+        
+        mf.mesh = mesh;
         Debug.Log(vertices.Count);
 
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
+        mesh.Optimize();
     }
 
     void TriangluateCube(Cube cube) {
