@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class MapGenerator : MonoBehaviour {
@@ -17,12 +18,8 @@ public class MapGenerator : MonoBehaviour {
 
     public int[,,] map;
 
-    void Start () {
-        GenerateMap();
-    }
-
     void Update() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetKeyDown(KeyCode.M)) {
             GenerateMap();
         }
     }
@@ -35,8 +32,99 @@ public class MapGenerator : MonoBehaviour {
             SmoothMap();
         }
 
+        ProcessMap();
+
         MeshGenerator meshGen = GetComponent<MeshGenerator>();
         meshGen.GenerateMesh(map, 5);
+    }
+
+    void ProcessMap () {
+        Debug.Log("HELLA!!");
+
+        /*List<List<Coord>> wallRegions = GetRegions(1);
+
+        int wallThresholdSize = 50;
+
+        foreach (List<Coord> wallRegion in wallRegions) {
+            if (wallRegion.Count < wallThresholdSize) {
+                foreach (Coord tile in wallRegion) {
+                    map[tile.tileX, tile.tileY, tile.tileZ] = 0;
+                }
+            }
+        }*/
+
+        List<List<Coord>> roomRegions = GetRegions(0);
+
+        int roomThresholdSize = 1000;
+
+        foreach (List<Coord> roomRegion in roomRegions) {
+            Debug.Log(roomRegion.Count);
+            if (roomRegion.Count < roomThresholdSize) {
+                foreach (Coord tile in roomRegion) {
+                    map[tile.tileX, tile.tileY, tile.tileZ] = 1;
+                }
+            }
+        }
+    }
+
+    List<List<Coord>> GetRegions (int tileType) {
+        List<List<Coord>> regions = new List<List<Coord>>();
+
+        int[,,] mapFlags = new int[width, height, depth];
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int z = 0; z < depth; z++) {
+
+                    if (mapFlags[x,y,z] == 0 && map[x,y,z] == tileType) {
+                        List<Coord> newRegion = GetRegionTiles(x, y, z);
+                        regions.Add(newRegion);
+
+                        foreach (Coord tile in newRegion) {
+                            mapFlags[tile.tileX, tile.tileY, tile.tileZ] = 1;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        return regions;
+    }
+
+    List<Coord> GetRegionTiles (int startX, int startY, int startZ) {
+        List<Coord> tiles = new List<Coord>();
+
+        int[,,] mapFlags = new int[width, height, depth];
+        int tileType = map[startX, startY, startZ];
+
+        Queue<Coord> queue = new Queue<Coord>();
+        queue.Enqueue(new Coord(startX, startY, startZ));
+        mapFlags[startX, startY, startZ] = 1;
+
+        while (queue.Count > 0) {
+            Coord tile = queue.Dequeue();
+            tiles.Add(tile);
+
+            for (int x = tile.tileX - 1; x <= tile.tileX + 1; x++) {
+                for (int y = tile.tileY - 1; y <= tile.tileY + 1; y++) {
+                    for (int z = tile.tileZ - 1; z <= tile.tileZ + 1; z++) {
+                        if (IsInMapRange(x, y, z) && (y == tile.tileY || x == tile.tileX || z == tile.tileZ)) {
+                            if (mapFlags[x,y,z] == 0 && map[x,y,z] == tileType) {
+                                mapFlags[x, y, z] = 1;
+                                queue.Enqueue(new Coord(x, y, z));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return tiles;
+    }
+    
+    bool IsInMapRange (int x, int y, int z) {
+        return x >= 0 && x < width && y >= 0 && y < height && z >= 0 && z < depth;
     }
 
     void RandomFillMap() {
@@ -81,10 +169,7 @@ public class MapGenerator : MonoBehaviour {
             for (int neighbourY = gridY - 1; neighbourY <= gridY + 1; neighbourY++) {
                 for (int neighbourZ = gridZ - 1; neighbourZ <= gridZ + 1; neighbourZ++) {
 
-                    if (neighbourX >= 0 && neighbourX < width &&
-                        neighbourY >= 0 && neighbourY < height &&
-                        neighbourZ >= 0 && neighbourZ < depth) {
-
+                    if (IsInMapRange(neighbourX, neighbourY, neighbourZ)) {
                         if (neighbourX != gridX || neighbourY != gridY || neighbourZ != gridZ) {
                             wallCount += map[neighbourX, neighbourY, neighbourZ];
                         }
@@ -96,6 +181,18 @@ public class MapGenerator : MonoBehaviour {
         }
 
         return wallCount;
+    }
+
+    struct Coord {
+        public int tileX;
+        public int tileY;
+        public int tileZ;
+
+        public Coord (int x, int y, int z) {
+            tileX = x;
+            tileY = y;
+            tileZ = z;
+        }
     }
 
     /*void OnDrawGizmos () {
