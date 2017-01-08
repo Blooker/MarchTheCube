@@ -5,25 +5,34 @@ using System;
 
 public class CellAutoGenerator : MonoBehaviour {
 
-    public int width;
-    public int height;
-    public int depth;
-    public float cubeSize = 5f;
-    public int smoothingIterations = 5;
-    
-    public CapsuleCollider capColl;
+    MapGenerator mapGenerator;
 
-    public string seed;
-    public bool useRandomSeed;
+    int width;
+    int height;
+    int depth;
+
+    public CapsuleCollider capColl;
 
     [Range(0, 100)]
     public int randomFillPercent;
 
     public int[,,] cellMap;
 
-    public int[,,] GenerateCellAuto(Vector3 mapSize) {
-        cellMap = new int[(int)mapSize.x, (int)mapSize.y, (int)mapSize.z];
-        RandomFillMap();
+    void Start () {
+        mapGenerator = GetComponent<MapGenerator>();
+    }
+
+    public int[,,] GenerateCellAuto() {
+        Vector3 mapSize = mapGenerator.GetMapSize();
+        int smoothingIterations = mapGenerator.GetSmoothingIterations();
+        string seed = mapGenerator.GetSeed();
+
+        width = (int)mapSize.x;
+        height = (int)mapSize.y;
+        depth = (int)mapSize.z;
+
+        cellMap = new int[width, height, depth];
+        RandomFillMap(seed);
         RemoveCellsInColl();
 
         for (int i = 0; i < smoothingIterations; i++) {
@@ -35,10 +44,7 @@ public class CellAutoGenerator : MonoBehaviour {
         return cellMap;
     }
 
-    void RandomFillMap() {
-        if (useRandomSeed)
-            seed = Time.time.ToString();
-
+    void RandomFillMap(string seed) {
         System.Random pseudoRandom = new System.Random(seed.GetHashCode());
 
         for (int x = 0; x < width; x++) {
@@ -76,7 +82,6 @@ public class CellAutoGenerator : MonoBehaviour {
                     //}
 
                     int neighbourWallTiles = GetSurroundingWallCount(x, y, z);
-                    //Debug.Log(neighbourWallTiles);
                     if (neighbourWallTiles >= 15) {
                         cellMap[x, y, z] = 1;
                     } else if (neighbourWallTiles < 13) {

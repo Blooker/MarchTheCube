@@ -707,14 +707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 337a6386e14c709408060851df3c943a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 100
-  height: 50
-  depth: 100
-  cubeSize: 1
-  smoothingIterations: 30
   capColl: {fileID: 788846061}
-  seed: 2.013698
-  useRandomSeed: 0
   randomFillPercent: 50
 --- !u!4 &1400200425
 Transform:

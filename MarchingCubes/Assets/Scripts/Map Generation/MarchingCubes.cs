@@ -4,11 +4,19 @@ using System.Collections.Generic;
 
 public class MarchingCubes : MonoBehaviour {
 
+    MapGenerator mapGenerator;
+
     public CubeGrid cubeGrid;
     List<Vector3> vertices;
     List<int> triangles;
 
-    public void GenerateMesh(CubeGrid cubeGrid) {
+    void Start () {
+        mapGenerator = GetComponent<MapGenerator>();
+    }
+
+    public void GenerateMesh() {
+        CubeGrid cubeGrid = mapGenerator.GetCubeGrid();
+
         vertices = new List<Vector3>();
         triangles = new List<int>();
 
