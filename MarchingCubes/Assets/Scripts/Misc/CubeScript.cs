@@ -401,23 +401,8 @@ public class CubeScript : MonoBehaviour {
         v5 = new VNode(new Vector3(pos.x - (size.x / 2), pos.y - (size.y / 2), pos.z - (size.z / 2)), false);
         v6 = new VNode(new Vector3(pos.x - (size.x / 2), pos.y + (size.y / 2), pos.z - (size.z / 2)), false);
         v7 = new VNode(new Vector3(pos.x + (size.x / 2), pos.y + (size.y / 2), pos.z - (size.z / 2)), false);
-        /*
-        e0 = new ENode(new Vector3(pos.x, pos.y - (size.y / 2), pos.z + (size.z / 2)));
-        e1 = new ENode(new Vector3(pos.x - (size.x / 2), pos.y, pos.z + (size.z / 2)));
-        e2 = new ENode(new Vector3(pos.x, pos.y + (size.y / 2), pos.z + (size.z / 2)));
-        e3 = new ENode(new Vector3(pos.x + (size.x / 2), pos.y, pos.z + (size.z / 2)));
-
-        e4 = new ENode(new Vector3(pos.x, pos.y - (size.y / 2), pos.z - (size.z / 2)));
-        e5 = new ENode(new Vector3(pos.x - (size.x / 2), pos.y, pos.z - (size.z / 2)));
-        e6 = new ENode(new Vector3(pos.x, pos.y + (size.y / 2), pos.z - (size.z / 2)));
-        e7 = new ENode(new Vector3(pos.x + (size.x / 2), pos.y, pos.z - (size.z / 2)));
-
-        e8 = new ENode(new Vector3(pos.x + (size.x / 2), pos.y - (size.y / 2), pos.z));
-        e9 = new ENode(new Vector3(pos.x - (size.x / 2), pos.y - (size.y / 2), pos.z));
-        e10 = new ENode(new Vector3(pos.x + (size.x / 2), pos.y + (size.y / 2), pos.z));
-        e11 = new ENode(new Vector3(pos.x - (size.x / 2), pos.y + (size.y / 2), pos.z));
-        */
         
+
         e0 = new ENode(new Vector3(0, 0 - (size.y / 2), 0 + (size.z / 2)));
         e1 = new ENode(new Vector3(0 - (size.x / 2), 0, 0 + (size.z / 2)));
         e2 = new ENode(new Vector3(0, 0 + (size.y / 2), 0 + (size.z / 2)));

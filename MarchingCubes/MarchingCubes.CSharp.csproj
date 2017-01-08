@@ -62,12 +62,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\CameraMove.cs" />
-    <Compile Include="Assets\Scripts\CubeScript.cs" />
-    <Compile Include="Assets\Scripts\LookupTables.cs" />
-    <Compile Include="Assets\Scripts\MapGenerator.cs" />
-    <Compile Include="Assets\Scripts\MeshGenerator.cs" />
-    <Compile Include="Assets\Scripts\SimpleSmoothMouseLook.cs" />
+    <Compile Include="Assets\Scripts\Map Generation\CellAutoGenerator.cs" />
+    <Compile Include="Assets\Scripts\Map Generation\ItemPlacement.cs" />
+    <Compile Include="Assets\Scripts\Map Generation\LookupTables.cs" />
+    <Compile Include="Assets\Scripts\Map Generation\MapGenerator.cs" />
+    <Compile Include="Assets\Scripts\Map Generation\MarchingCubes.cs" />
+    <Compile Include="Assets\Scripts\Misc\CameraMove.cs" />
+    <Compile Include="Assets\Scripts\Misc\CubeScript.cs" />
+    <Compile Include="Assets\Scripts\Misc\SimpleSmoothMouseLook.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerMotor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
