@@ -19,20 +19,10 @@ public class CellAutoGenerator : MonoBehaviour {
     [Range(0, 100)]
     public int randomFillPercent;
 
-    public int[,,] map;
+    public int[,,] cellMap;
 
-    void Start () {
-        GenerateMap();
-    }
-
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.M)) {
-            GenerateMap();
-        }
-    }
-
-    void GenerateMap() {
-        map = new int[width, height, depth];
+    public int[,,] GenerateCellAuto(Vector3 mapSize) {
+        cellMap = new int[(int)mapSize.x, (int)mapSize.y, (int)mapSize.z];
         RandomFillMap();
         RemoveCellsInColl();
 
@@ -42,8 +32,7 @@ public class CellAutoGenerator : MonoBehaviour {
 
         ProcessMap();
 
-        MarchingCubes marchingCubes = GetComponent<MarchingCubes>();
-        marchingCubes.GenerateMesh(map, cubeSize);
+        return cellMap;
     }
 
     void RandomFillMap() {
@@ -57,9 +46,9 @@ public class CellAutoGenerator : MonoBehaviour {
                 for (int z = 0; z < depth; z++) {
 
                     if (x == 0 || x == width - 1 || y == 0 || y == height - 1 || z == 0 || z == depth - 1) {
-                        map[x, y, z] = 1;
+                        cellMap[x, y, z] = 1;
                     } else {
-                        map[x, y, z] = (pseudoRandom.Next(0, 100) < randomFillPercent) ? 1 : 0;
+                        cellMap[x, y, z] = (pseudoRandom.Next(0, 100) < randomFillPercent) ? 1 : 0;
                     }
                 }
             }
@@ -71,7 +60,7 @@ public class CellAutoGenerator : MonoBehaviour {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < depth; z++) {
                     if (capColl.bounds.Contains(new Vector3(x, y, z))) {
-                        map[x, y, z] = 0;
+                        cellMap[x, y, z] = 0;
                     }
                 }
             }
@@ -89,9 +78,9 @@ public class CellAutoGenerator : MonoBehaviour {
                     int neighbourWallTiles = GetSurroundingWallCount(x, y, z);
                     //Debug.Log(neighbourWallTiles);
                     if (neighbourWallTiles >= 15) {
-                        map[x, y, z] = 1;
+                        cellMap[x, y, z] = 1;
                     } else if (neighbourWallTiles < 13) {
-                        map[x, y, z] = 0;
+                        cellMap[x, y, z] = 0;
                     }
                 }
             }
@@ -106,7 +95,7 @@ public class CellAutoGenerator : MonoBehaviour {
 
                     if (IsInMapRange(neighbourX, neighbourY, neighbourZ)) {
                         if (neighbourX != gridX || neighbourY != gridY || neighbourZ != gridZ) {
-                            wallCount += map[neighbourX, neighbourY, neighbourZ];
+                            wallCount += cellMap[neighbourX, neighbourY, neighbourZ];
                         }
                     } else {
                         wallCount++;
@@ -127,17 +116,17 @@ public class CellAutoGenerator : MonoBehaviour {
         foreach (List<Coord> roomRegion in roomRegions) {
             if (roomRegion.Count < roomThresholdSize) {
                 foreach (Coord tile in roomRegion) {
-                    map[tile.tileX, tile.tileY, tile.tileZ] = 1;
+                    cellMap[tile.tileX, tile.tileY, tile.tileZ] = 1;
                 }
             } else {
-                survivingRooms.Add(new Room(roomRegion, map));
+                survivingRooms.Add(new Room(roomRegion, cellMap));
             }
         }
 
         survivingRooms.Sort();
         for (int i = 1; i < survivingRooms.Count; i++) {
             foreach(Coord tile in survivingRooms[i].tiles) {
-                map[tile.tileX, tile.tileY, tile.tileZ] = 1;
+                cellMap[tile.tileX, tile.tileY, tile.tileZ] = 1;
             }
         }
     }
@@ -152,7 +141,7 @@ public class CellAutoGenerator : MonoBehaviour {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < depth; z++) {
 
-                    if (mapFlags[x,y,z] == 0 && map[x,y,z] == tileType) {
+                    if (mapFlags[x,y,z] == 0 && cellMap[x,y,z] == tileType) {
                         List<Coord> newRegion = GetRegionTiles(x, y, z);
                         regions.Add(newRegion);
 
@@ -172,7 +161,7 @@ public class CellAutoGenerator : MonoBehaviour {
         List<Coord> tiles = new List<Coord>();
 
         int[,,] mapFlags = new int[width, height, depth];
-        int tileType = map[startX, startY, startZ];
+        int tileType = cellMap[startX, startY, startZ];
 
         Queue<Coord> queue = new Queue<Coord>();
         queue.Enqueue(new Coord(startX, startY, startZ));
@@ -186,7 +175,7 @@ public class CellAutoGenerator : MonoBehaviour {
                 for (int y = tile.tileY - 1; y <= tile.tileY + 1; y++) {
                     for (int z = tile.tileZ - 1; z <= tile.tileZ + 1; z++) {
                         if (IsInMapRange(x, y, z) && (y == tile.tileY || x == tile.tileX || z == tile.tileZ)) {
-                            if (mapFlags[x,y,z] == 0 && map[x,y,z] == tileType) {
+                            if (mapFlags[x,y,z] == 0 && cellMap[x,y,z] == tileType) {
                                 mapFlags[x, y, z] = 1;
                                 queue.Enqueue(new Coord(x, y, z));
                             }

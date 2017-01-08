@@ -682,11 +682,13 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1400200425}
+  - 114: {fileID: 1400200431}
   - 114: {fileID: 1400200424}
   - 114: {fileID: 1400200426}
   - 33: {fileID: 1400200428}
   - 23: {fileID: 1400200427}
   - 64: {fileID: 1400200429}
+  - 114: {fileID: 1400200430}
   m_Layer: 0
   m_Name: MapGenerator
   m_TagString: Untagged
@@ -782,6 +784,33 @@ MeshCollider:
   serializedVersion: 2
   m_Convex: 0
   m_Mesh: {fileID: 0}
+--- !u!114 &1400200430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1400200423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dbf6b63e9e603c48aaac2100ba2030e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1400200431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1400200423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c14a82073ebb8749911ad1a708fa36c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapSize: {x: 100, y: 50, z: 100}
+  smoothingIterations: 30
+  cubeSize: 1
+  seed: 2.013698
+  useRandomSeed: 0
 --- !u!1 &1635329301
 GameObject:
   m_ObjectHideFlags: 0
