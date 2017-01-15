@@ -8,8 +8,7 @@ using System.Collections.Generic;
 
 public class MapGenerator : MonoBehaviour {
 
-    int[,,] cellMap;
-    CubeGrid cubeGrid;
+	// TEST SEED : 2.013698
 
     [SerializeField]
     Vector3 mapSize;
@@ -24,8 +23,6 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField]
     bool useRandomSeed;
 
-    List<Vector3> floorTilesPos;
-
     CellAutoGenerator cellAuto;
     MarchingCubes marchCubes;
     ItemPlacement itemPlacement;
@@ -35,9 +32,7 @@ public class MapGenerator : MonoBehaviour {
         cellAuto = GetComponent<CellAutoGenerator>();
         marchCubes = GetComponent<MarchingCubes>();
         itemPlacement = GetComponent<ItemPlacement>();
-
-        floorTilesPos = new List<Vector3>();
-
+		
         GenerateMap();
 	}
 	
@@ -53,12 +48,13 @@ public class MapGenerator : MonoBehaviour {
         if (useRandomSeed)
             seed = Time.time.ToString();
 
-        cellMap = cellAuto.GenerateCellAuto();
-        cubeGrid = new CubeGrid(cellMap, cubeSize);
+		cellAuto.GenerateCellAuto ( mapSize, smoothingIterations, seed );
+        marchCubes.CreateCubeGrid( cellAuto.GetCellMap(), cubeSize );
 
         marchCubes.GenerateMesh();
-
-        SetFloorTilesPos();
+		
+        itemPlacement.LocateFloorTilesPos( marchCubes.GetCubeGrid(), cubeSize );
+		itemPlacement.PlaceRandomItems ( seed );
     }
 
     #region Seed methods
@@ -82,13 +78,13 @@ public class MapGenerator : MonoBehaviour {
 
     #region Cube grid methods
 
-    /// <summary>
+    /*/// <summary>
     /// Gets the map's current cube grid.
     /// </summary>
     /// <returns>Instance of CubeGrid class</returns>
     public CubeGrid GetCubeGrid () {
         return cubeGrid;
-    }
+    }*/
     #endregion
 
     #region Use random seed methods
@@ -145,36 +141,6 @@ public class MapGenerator : MonoBehaviour {
     /// <returns>Integer smoothing iterations</returns>
     public int GetSmoothingIterations() {
         return smoothingIterations;
-    }
-    #endregion
-
-    #region Floor tile positions methods
-
-    /// <summary>
-    /// Gets all floor tiles in the map and adds them to a list of floor tiles.
-    /// </summary>
-    void SetFloorTilesPos() {
-        floorTilesPos.Clear();
-
-        for (int x = 0; x < cubeGrid.cubes.GetLength(0); x++) {
-            for (int y = 0; y < cubeGrid.cubes.GetLength(1); y++) {
-                for (int z = 0; z < cubeGrid.cubes.GetLength(2); z++) {
-                    if (cubeGrid.cubes[x, y, z].caseValue == 51) {
-                        Vector3 _floorTilePos = new Vector3(x * cubeSize, y * cubeSize, z * cubeSize);
-                        floorTilesPos.Add(_floorTilePos);
-                    }
-                    
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// Returns list of all the floor tiles in the map.
-    /// </summary>
-    /// <returns>Vector3 list</returns>
-    public List<Vector3> GetFloorTilesPos () {
-        return floorTilesPos;
     }
     #endregion
 }

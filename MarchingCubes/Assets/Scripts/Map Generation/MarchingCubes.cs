@@ -4,19 +4,11 @@ using System.Collections.Generic;
 
 public class MarchingCubes : MonoBehaviour {
 
-    MapGenerator mapGenerator;
-
-    public CubeGrid cubeGrid;
+    CubeGrid cubeGrid;
     List<Vector3> vertices;
     List<int> triangles;
 
-    void Start () {
-        mapGenerator = GetComponent<MapGenerator>();
-    }
-
     public void GenerateMesh() {
-        CubeGrid cubeGrid = mapGenerator.GetCubeGrid();
-
         vertices = new List<Vector3>();
         triangles = new List<int>();
 
@@ -32,7 +24,6 @@ public class MarchingCubes : MonoBehaviour {
         MeshFilter meshFilter = GetComponent<MeshFilter>();
         
         meshFilter.mesh = mesh;
-        Debug.Log(vertices.Count);
 
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
@@ -97,6 +88,32 @@ public class MarchingCubes : MonoBehaviour {
         triangles.Add(b.vertexIndex);
         triangles.Add(c.vertexIndex);
     }
+
+	/// <summary>
+	/// Creates a new cube grid and sets it as the current grid.
+	/// </summary>
+	/// <param name="cellMap">The cellular automaton map.</param>
+	/// <param name="cubeSize">The size of each cube in the grid.</param>
+	public void CreateCubeGrid (int[,,] cellMap, float cubeSize) {
+		CubeGrid _cubeGrid = new CubeGrid (cellMap, cubeSize);
+		SetCubeGrid (_cubeGrid);
+	}
+
+	/// <summary>
+	/// Used to set cube grid.
+	/// </summary>
+	/// <param name="_seed">The cube grid.</param>
+	public void SetCubeGrid (CubeGrid _cubeGrid) {
+		cubeGrid = _cubeGrid;
+	}
+
+	/// <summary>
+	/// Gets the map's current cube grid.
+	/// </summary>
+	/// <returns>The cube grid.</returns>
+	public CubeGrid GetCubeGrid () {
+		return cubeGrid;
+	}
 }
 
 #region Marching Cube related classes

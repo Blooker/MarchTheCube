@@ -22,14 +22,14 @@ public class CellAutoGenerator : MonoBehaviour {
         mapGenerator = GetComponent<MapGenerator>();
     }
 
-    public int[,,] GenerateCellAuto() {
-        Vector3 mapSize = mapGenerator.GetMapSize();
-        int smoothingIterations = mapGenerator.GetSmoothingIterations();
-        string seed = mapGenerator.GetSeed();
+    public void GenerateCellAuto(Vector3 size, int smoothingIterations, string seed) {
+        //Vector3 mapSize = mapGenerator.GetMapSize();
+        //int smoothingIterations = mapGenerator.GetSmoothingIterations();
+        //string seed = mapGenerator.GetSeed();
 
-        width = (int)mapSize.x;
-        height = (int)mapSize.y;
-        depth = (int)mapSize.z;
+        width = (int)size.x;
+        height = (int)size.y;
+        depth = (int)size.z;
 
         cellMap = new int[width, height, depth];
         RandomFillMap(seed);
@@ -41,7 +41,7 @@ public class CellAutoGenerator : MonoBehaviour {
 
         ProcessMap();
 
-        return cellMap;
+        SetCellMap(cellMap);
     }
 
     void RandomFillMap(string seed) {
@@ -225,4 +225,12 @@ public class CellAutoGenerator : MonoBehaviour {
             return otherRoom.roomSize.CompareTo(roomSize);
         }
     }
+
+	public void SetCellMap (int[,,] _cellMap) {
+		cellMap = _cellMap;
+	}
+
+	public int[,,] GetCellMap () {
+		return cellMap;
+	}
 }
