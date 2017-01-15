@@ -9,36 +9,48 @@ public class ItemPlacement : MonoBehaviour {
 	[SerializeField]
 	GameObject player;
 
-	[SerializeField]
+    [SerializeField]
 	GameObject[] items;
 
     [SerializeField]
     int[] itemPlacementChances;
 
 	List<Vector3> floorTilesPos = new List<Vector3>();
-	List<GameObject> enemies = new List<GameObject>();
-	
-	List<GameObject> ammoItems = new List<GameObject>();
-	List<GameObject> healthItems = new List<GameObject>();
-
-	//List<Vector3> floorTilesPos;
-
     GameObject spawnPoint;
+
+    //List<GameObject> enemies = new List<GameObject>();
+
+    //List<GameObject> ammoItems = new List<GameObject>();
+    //List<GameObject> healthItems = new List<GameObject>();
+
+    //List<Vector3> floorTilesPos;
+
     //List<GameObject> enemies;
 
     //List<GameObject> ammoItems;
     //List<GameObject> healthItems;
-    
+
     public void PlaceRandomItems (string seed) {
-		System.Random pseudoRandom = new System.Random (seed.GetHashCode());
-        Debug.Log(itemPlacementChances.Take(2).Sum().ToString());
+        ObjectManager objectManager = GameObject.Find("GameManager").GetComponent<ObjectManager>();
+
+
+        System.Random pseudoRandom = new System.Random (seed.GetHashCode());
 
 		for (int i = 0; i < floorTilesPos.Count; i++) {
-			GameObject itemToPlace = ItemFromPercentage(pseudoRandom.Next(0, 400));
+            GameObject itemToPlace = null;
+            
+            do {
+                itemToPlace = ItemFromPercentage(pseudoRandom.Next(0, 400));
+                if (itemToPlace == null)
+                    break;
+            } while ( objectManager.GetSpawnPoint() != null && itemToPlace.tag == "SpawnPoint" );
+
 
 			if (itemToPlace != null) {
 				Vector3 itemPos = new Vector3 (floorTilesPos[i].x, floorTilesPos[i].y + 0.7f, floorTilesPos[i].z);
-				GameObject spawnedItem = Instantiate(itemToPlace, itemPos, Quaternion.identity) as GameObject; 
+				GameObject spawnedItem = Instantiate(itemToPlace, itemPos, Quaternion.identity) as GameObject;
+
+                objectManager.AddToLevelObjects(spawnedItem);
 
 				if (spawnedItem.name == "SpawnPoint(Clone)" && spawnPoint == null)
 					spawnPoint = spawnedItem;
@@ -50,31 +62,6 @@ public class ItemPlacement : MonoBehaviour {
 		Vector3 playerPos = new Vector3 (spawnPoint.transform.position.x, spawnPoint.transform.position.y + 2f, spawnPoint.transform.position.z);
 		Instantiate (player, playerPos, Quaternion.identity);
     }
-
-    /*GameObject ItemFromPercentage (int percentage) {
-
-		GameObject item = null;
-
-		// Spawn ammo
-		if (percentage >= 0 && percentage < 4) {
-			item = items[0];
-			ammoItems.Add( item );
-		}
-
-		// Spawn health
-		if (percentage >= 4 && percentage < 8) {
-			item = items[1];
-			healthItems.Add( item );
-		}
-
-		// Spawn player spawn point
-		if (percentage >= 8 && percentage < 12 && spawnPoint == null) {
-			item = items[2];
-			//spawnPoint = item;
-		}
-
-		return item;
-	}*/
 
     GameObject ItemFromPercentage(int chance) {
         GameObject itemToPlace = null;
@@ -142,7 +129,7 @@ public class ItemPlacement : MonoBehaviour {
 		return spawnPoint;
 	}
 	
-	public List<GameObject> GetEnemies() {
+	/*public List<GameObject> GetEnemies() {
 		return enemies;
 	}
 	
@@ -152,7 +139,7 @@ public class ItemPlacement : MonoBehaviour {
 	
 	public List<GameObject> GetHealthItems () {
 		return healthItems;
-	}
+	}*/
 
 	// Use this for initialization
 	void Start () {
