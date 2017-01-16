@@ -19,6 +19,22 @@ public class ObjectManager : MonoBehaviour {
         }
     }
 
+    public bool CanPlaceObject (GameObject objectToPlace) {
+        if (objectToPlace == null) {
+            return true;
+        }
+
+        switch (objectToPlace.tag) {
+            case "SpawnPoint":
+                if (spawnPoint != null) {
+                    return false;
+                }
+                break;
+        }
+
+        return true;
+    }
+
     public void AddToLevelObjects (GameObject levelObject) {
         objectsInLevel.Add(levelObject);
 

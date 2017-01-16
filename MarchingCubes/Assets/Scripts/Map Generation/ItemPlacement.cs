@@ -41,9 +41,7 @@ public class ItemPlacement : MonoBehaviour {
             
             do {
                 itemToPlace = ItemFromPercentage(pseudoRandom.Next(0, 400));
-                if (itemToPlace == null)
-                    break;
-            } while ( objectManager.GetSpawnPoint() != null && itemToPlace.tag == "SpawnPoint" );
+            } while ( !objectManager.CanPlaceObject ( itemToPlace ) );
 
 
 			if (itemToPlace != null) {
