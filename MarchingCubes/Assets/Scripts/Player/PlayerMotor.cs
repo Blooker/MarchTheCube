@@ -4,9 +4,6 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMotor : MonoBehaviour {
 
-    [SerializeField]
-    private Camera cam;
-
 	private Vector3 moveVelocity, hoverVelocity, rotation = Vector3.zero;
 
     private float cameraRotationX = 0f;
@@ -22,8 +19,11 @@ public class PlayerMotor : MonoBehaviour {
 
 	private Rigidbody rb;
 
+    private Camera cam;
+
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
+        cam = GetComponent<PlayerController>().GetPlayerCam();
 	}
 
     // Run every physics iteration
@@ -51,6 +51,10 @@ public class PlayerMotor : MonoBehaviour {
     /// Sets the player's rotation.
     public void SetCamRotation (float _cameraRotationX) {
         cameraRotationX = _cameraRotationX;
+    }
+
+    public Camera GetPlayerCam () {
+        return cam;
     }
 
     // Performs movement along the X/Z axis based on player velocity.

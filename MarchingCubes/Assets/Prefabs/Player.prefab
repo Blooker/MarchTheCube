@@ -27,6 +27,8 @@ GameObject:
   - 54: {fileID: 5431974}
   - 114: {fileID: 11421710}
   - 114: {fileID: 11448208}
+  - 114: {fileID: 11420036}
+  - 114: {fileID: 11496218}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -130,7 +132,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132984}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 70, y: 40, z: 50}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 446628}
@@ -261,11 +263,11 @@ Light:
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_Strength: 1
     m_Bias: 0.05
-    m_NormalBias: 0.4
+    m_NormalBias: 0
     m_NearPlane: 0.2
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
@@ -279,6 +281,17 @@ Light:
   m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_AreaSize: {x: 1, y: 1}
+--- !u!114 &11420036
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 132984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33cb69abf9234b94e87ccc9a28fd07d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11421710
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -293,6 +306,7 @@ MonoBehaviour:
   speed: 10
   mouseSens: 3
   hoverForce: 40
+  playerCam: {fileID: 2022156}
 --- !u!114 &11448208
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -304,9 +318,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 297036fd6bb738140badbc819ac481f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 2022156}
   camRotationLimit: 85
   hoverTimeLimit: 3
+--- !u!114 &11496218
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 132984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 546504294a16bdd4d8963087a8f80412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerWeapon:
+    name: Machine Gun
+    damage: 5
+    range: 50
+    fireRate: 0
 --- !u!124 &12487728
 Behaviour:
   m_ObjectHideFlags: 1
@@ -333,7 +362,19 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Shadows.m_Type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Shadows.m_NormalBias
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 132984}
