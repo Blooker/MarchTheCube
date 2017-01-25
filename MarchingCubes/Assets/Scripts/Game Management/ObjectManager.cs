@@ -8,9 +8,14 @@ public class ObjectManager : MonoBehaviour {
 
     List<GameObject> ammoInLevel = new List<GameObject>();
     List<GameObject> healthInLevel = new List<GameObject>();
-    List<GameObject> enemiesInLevel = new List<GameObject>();
+    static List<GameObject> enemiesInLevel = new List<GameObject>();
 
     GameObject spawnPoint;
+
+    public static void RemoveEnemy (GameObject enemy) {
+        enemiesInLevel.Remove(enemy);
+        Debug.Log(enemiesInLevel.Count);
+    }
 
     public void ClearObjects () {
         for (int i = 0; i < objectsInLevel.Count; i++) {

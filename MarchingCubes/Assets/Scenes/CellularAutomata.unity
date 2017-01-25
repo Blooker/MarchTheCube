@@ -763,11 +763,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 132984, guid: e6dbbe29361af2a4fba51993b1afc759, type: 2}
   items:
-  - {fileID: 180958, guid: be246fbda956c314c9a0d262edf07f67, type: 2}
-  - {fileID: 156764, guid: 288f62ff0bfd81245a9cb595b888eb0f, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 121234, guid: 20b6a5cc2a0530942b467aa6c737101e, type: 2}
   - {fileID: 174406, guid: e4f996cef61cbd940838e9608ff9f9ff, type: 2}
-  itemPlacementChances: 04000000030000000500000003000000
+  - {fileID: 180958, guid: be246fbda956c314c9a0d262edf07f67, type: 2}
+  - {fileID: 156764, guid: 288f62ff0bfd81245a9cb595b888eb0f, type: 2}
+  itemPlacementChances: 040000000300000005000000030000000100000001000000
 --- !u!114 &1400200431
 MonoBehaviour:
   m_ObjectHideFlags: 0

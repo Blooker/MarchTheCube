@@ -39,7 +39,8 @@ public class WeaponManager : MonoBehaviour {
             Debug.Log("You hit " + rayHit.transform.name);
 
             if (rayHit.collider.gameObject.tag == "Enemy") {
-
+                EnemyController enemyController = rayHit.collider.GetComponent<EnemyController>();
+                enemyController.DamageEnemy(playerWeapon.damage);
             }
 
         }

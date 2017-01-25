@@ -18,18 +18,6 @@ public class ItemPlacement : MonoBehaviour {
 	List<Vector3> floorTilesPos = new List<Vector3>();
     GameObject spawnPoint;
 
-    //List<GameObject> enemies = new List<GameObject>();
-
-    //List<GameObject> ammoItems = new List<GameObject>();
-    //List<GameObject> healthItems = new List<GameObject>();
-
-    //List<Vector3> floorTilesPos;
-
-    //List<GameObject> enemies;
-
-    //List<GameObject> ammoItems;
-    //List<GameObject> healthItems;
-
     public void PlaceRandomItems (string seed) {
         ObjectManager objectManager = GameObject.Find("GameManager").GetComponent<ObjectManager>();
 
@@ -45,7 +33,7 @@ public class ItemPlacement : MonoBehaviour {
 
 
 			if (itemToPlace != null) {
-				Vector3 itemPos = new Vector3 (floorTilesPos[i].x, floorTilesPos[i].y + 0.7f, floorTilesPos[i].z);
+				Vector3 itemPos = new Vector3 (floorTilesPos[i].x, floorTilesPos[i].y + 1f, floorTilesPos[i].z);
 				GameObject spawnedItem = Instantiate(itemToPlace, itemPos, Quaternion.identity) as GameObject;
 
                 objectManager.AddToLevelObjects(spawnedItem);

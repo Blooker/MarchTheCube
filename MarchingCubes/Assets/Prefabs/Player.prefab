@@ -282,7 +282,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.45
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -435,6 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 678ed4a4af376674f91cf4d5700efcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 8286802}
 --- !u!114 &11496218
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -451,6 +452,7 @@ MonoBehaviour:
     damage: 5
     range: 50
     fireRate: 0.1
+    gunSound: {fileID: 8300000, guid: e5b153eb6e3063947b07c8f9528896e3, type: 3}
 --- !u!124 &12487728
 Behaviour:
   m_ObjectHideFlags: 1
