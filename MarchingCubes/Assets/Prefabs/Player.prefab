@@ -28,6 +28,7 @@ GameObject:
   - 114: {fileID: 11421710}
   - 114: {fileID: 11448208}
   - 114: {fileID: 11420036}
+  - 114: {fileID: 11472970}
   - 114: {fileID: 11496218}
   m_Layer: 0
   m_Name: Player
@@ -88,6 +89,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &187510
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 457958}
+  - 82: {fileID: 8286802}
+  m_Layer: 0
+  m_Name: Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &419412
 Transform:
   m_ObjectHideFlags: 1
@@ -112,6 +129,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 482298}
   m_RootOrder: 0
+--- !u!4 &457958
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187510}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 482298}
+  m_RootOrder: 3
 --- !u!4 &482190
 Transform:
   m_ObjectHideFlags: 1
@@ -138,6 +167,7 @@ Transform:
   - {fileID: 446628}
   - {fileID: 482190}
   - {fileID: 419412}
+  - {fileID: 457958}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &491934
@@ -241,6 +271,80 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 143970}
   m_Enabled: 1
+--- !u!82 &8286802
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187510}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!92 &9202674
 Behaviour:
   m_ObjectHideFlags: 1
@@ -320,6 +424,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camRotationLimit: 85
   hoverTimeLimit: 3
+--- !u!114 &11472970
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 132984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 678ed4a4af376674f91cf4d5700efcf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11496218
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -335,7 +450,7 @@ MonoBehaviour:
     name: Machine Gun
     damage: 5
     range: 50
-    fireRate: 0
+    fireRate: 0.1
 --- !u!124 &12487728
 Behaviour:
   m_ObjectHideFlags: 1

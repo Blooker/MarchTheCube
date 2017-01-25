@@ -29,8 +29,11 @@ public class PlayerInput : MonoBehaviour {
         playerController.ApplyCamRotation(xRot, yRot);
 
         UpdateGunInput();
-        if (leftMouse)
-            weaponManager.Shoot();
+        if (leftMouse) {
+            weaponManager.StartShooting();
+        } else {
+            weaponManager.StopShooting();
+        }
 
     }
 
