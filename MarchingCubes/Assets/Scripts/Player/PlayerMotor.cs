@@ -76,7 +76,7 @@ public class PlayerMotor : MonoBehaviour {
 
         } else {
             if (curHoverTime > 0)
-                curHoverTime -= Time.deltaTime;
+                curHoverTime -= Time.deltaTime/2;
 
         }
     }

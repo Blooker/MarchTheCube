@@ -4,27 +4,34 @@ using System.Collections.Generic;
 
 public class ObjectManager : MonoBehaviour {
 
-    List<GameObject> objectsInLevel = new List<GameObject>();
+    [SerializeField]
+    private GameObject player;
 
-    List<GameObject> ammoInLevel = new List<GameObject>();
-    List<GameObject> healthInLevel = new List<GameObject>();
+    static List<GameObject> objectsInLevel = new List<GameObject>();
+
+    static List<GameObject> ammoInLevel = new List<GameObject>();
+    static List<GameObject> healthInLevel = new List<GameObject>();
     static List<GameObject> enemiesInLevel = new List<GameObject>();
 
-    GameObject spawnPoint;
-
+    static GameObject spawnPoint;
+	
     public static void RemoveEnemy (GameObject enemy) {
         enemiesInLevel.Remove(enemy);
         Debug.Log(enemiesInLevel.Count);
     }
 
-    public void ClearObjects () {
+    public static void ClearObjects () {
         for (int i = 0; i < objectsInLevel.Count; i++) {
             Destroy(objectsInLevel[i]);
-            objectsInLevel.RemoveAt(i);
         }
+		objectsInLevel.Clear();
+		ammoInLevel.Clear ();
+		healthInLevel.Clear ();
+		enemiesInLevel.Clear ();
+		spawnPoint = null;
     }
 
-    public bool CanPlaceObject (GameObject objectToPlace) {
+    public static bool CanPlaceObject (GameObject objectToPlace) {
         if (objectToPlace == null) {
             return true;
         }
@@ -40,7 +47,7 @@ public class ObjectManager : MonoBehaviour {
         return true;
     }
 
-    public void AddToLevelObjects (GameObject levelObject) {
+    public static void AddToLevelObjects (GameObject levelObject) {
         objectsInLevel.Add(levelObject);
 
         switch (levelObject.tag) {
@@ -62,10 +69,52 @@ public class ObjectManager : MonoBehaviour {
         }
     }
 
-    public GameObject GetSpawnPoint () {
-        return spawnPoint;
+	public static void RemoveFromLevelObjects (GameObject levelObject) {
+		objectsInLevel.Remove (levelObject);
+
+		switch (levelObject.tag) {
+			case "Ammo":
+				ammoInLevel.Remove(levelObject);
+				break;
+				
+			case "Health":
+				healthInLevel.Remove(levelObject);
+				break;
+				
+			case "Enemy":
+				enemiesInLevel.Remove(levelObject);
+				break;
+				
+			case "SpawnPoint":
+				spawnPoint = null;
+				break;
+		}
+	}
+
+    public static void SpawnPlayer () {
+        
     }
 
+    void InstantiatePlayer () {
+
+    }
+
+    public static List<GameObject> GetEnemiesInLevel () {
+        return enemiesInLevel;
+    }
+
+	public static int GetAmmoCount() {
+		return ammoInLevel.Count;
+	}
+
+	public static int GetHealthCount() {
+		return healthInLevel.Count;
+	}
+	
+    public static GameObject GetSpawnPoint () {
+        return spawnPoint;
+    }
+	
     // Use this for initialization
     void Start () {
 	

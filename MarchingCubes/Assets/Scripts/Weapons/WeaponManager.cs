@@ -13,6 +13,7 @@ public class WeaponManager : MonoBehaviour {
     Camera playerCam;
 
     PlayerSound playerSound;
+    PlayerStats playerStats;
 
     public void StartShooting () {
         shooting = true;
@@ -30,29 +31,32 @@ public class WeaponManager : MonoBehaviour {
     }
 
     public void Shoot() {
+        if (playerStats.GetAmmoCount() > 0) {
+            playerSound.PlayPlayerSound(playerWeapon.gunSound);
 
-        playerSound.PlayPlayerSound(playerWeapon.gunSound);
+            RaycastHit rayHit;
 
-        RaycastHit rayHit;
+            if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out rayHit, playerWeapon.range)) {
 
-        if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out rayHit, playerWeapon.range)) {
-            Debug.Log("You hit " + rayHit.transform.name);
+                if (rayHit.collider.gameObject.tag == "Enemy") {
+                    EnemyController enemyController = rayHit.collider.GetComponent<EnemyController>();
+                    enemyController.DamageEnemy(playerWeapon.damage);
+                }
 
-            if (rayHit.collider.gameObject.tag == "Enemy") {
-                EnemyController enemyController = rayHit.collider.GetComponent<EnemyController>();
-                enemyController.DamageEnemy(playerWeapon.damage);
             }
 
+            // If hit enemy, take away health
+
+            // Take away ammo
+            playerStats.RemoveAmmo(playerWeapon.bulletsPerShot);
         }
-
-        // If hit enemy, take away health
-
-        // Take away ammo
     }
 
     void Start () {
         playerCam = GetComponent<PlayerController>().GetPlayerCam();
         playerSound = GetComponent<PlayerSound>();
+        playerStats = GetComponent<PlayerStats>();
+
         shotInterval = playerWeapon.fireRate;
     }
 

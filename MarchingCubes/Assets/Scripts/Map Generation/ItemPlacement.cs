@@ -29,14 +29,14 @@ public class ItemPlacement : MonoBehaviour {
             
             do {
                 itemToPlace = ItemFromPercentage(pseudoRandom.Next(0, 400));
-            } while ( !objectManager.CanPlaceObject ( itemToPlace ) );
+            } while ( !ObjectManager.CanPlaceObject ( itemToPlace ) );
 
 
 			if (itemToPlace != null) {
 				Vector3 itemPos = new Vector3 (floorTilesPos[i].x, floorTilesPos[i].y + 1f, floorTilesPos[i].z);
 				GameObject spawnedItem = Instantiate(itemToPlace, itemPos, Quaternion.identity) as GameObject;
 
-                objectManager.AddToLevelObjects(spawnedItem);
+                ObjectManager.AddToLevelObjects(spawnedItem);
 
 				if (spawnedItem.name == "SpawnPoint(Clone)" && spawnPoint == null)
 					spawnPoint = spawnedItem;
@@ -45,8 +45,17 @@ public class ItemPlacement : MonoBehaviour {
 
 		Debug.Log (spawnPoint);
 
-		Vector3 playerPos = new Vector3 (spawnPoint.transform.position.x, spawnPoint.transform.position.y + 2f, spawnPoint.transform.position.z);
-		Instantiate (player, playerPos, Quaternion.identity);
+        SpawnPlayer();
+    }
+
+    void SpawnPlayer () {
+        Vector3 playerPos = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y + 2f, spawnPoint.transform.position.z);
+        GameObject newPlayer = Instantiate(player, playerPos, Quaternion.identity) as GameObject;
+
+        List<GameObject> enemiesInLevel = ObjectManager.GetEnemiesInLevel();
+        for (int i = 0; i < enemiesInLevel.Count; i++) {
+            enemiesInLevel[i].GetComponent<EnemyController>().SetPlayerObject(newPlayer);
+        }
     }
 
     GameObject ItemFromPercentage(int chance) {
@@ -110,10 +119,6 @@ public class ItemPlacement : MonoBehaviour {
 		floorTilesPos = _floorTilesPos;
 	}
 	#endregion
-	
-	public GameObject GetSpawn() {
-		return spawnPoint;
-	}
 	
 	/*public List<GameObject> GetEnemies() {
 		return enemies;

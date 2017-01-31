@@ -16,9 +16,11 @@ public class PlayerController : MonoBehaviour {
     private Camera playerCam;
 
     private PlayerMotor motor;
+	private PlayerStats playerStats;
 
 	void Start () {
 		motor = GetComponent<PlayerMotor> ();
+		playerStats = GetComponent<PlayerStats> ();
         Cursor.lockState = CursorLockMode.Locked;
 	}
 
@@ -60,4 +62,32 @@ public class PlayerController : MonoBehaviour {
     public Camera GetPlayerCam () {
         return playerCam;
     }
+
+	void OnTriggerEnter (Collider coll) {
+        bool destroyTriggerObj = false;
+
+		switch (coll.gameObject.tag) {
+			case ("Ammo"):
+				playerStats.AddAmmo(15);
+                destroyTriggerObj = true;
+				break;
+			case ("Health"):
+				playerStats.AddHealth(10);
+                destroyTriggerObj = true;
+				break;
+		}
+
+        if (destroyTriggerObj) {
+            ObjectManager.RemoveFromLevelObjects(coll.gameObject);
+            Destroy(coll.gameObject);
+        }
+
+		/*Debug.Log ("Ammo: " + 
+		           "Items in level = " + ObjectManager.GetAmmoCount().ToString() + ", " +
+		           "Player amount = " + playerStats.GetAmmoCount().ToString() + "\n" +
+
+		           "Health: " + 
+		           "Items in level = " + ObjectManager.GetHealthCount().ToString() + ", " +
+		           "Player amount = " + playerStats.GetHealthCount().ToString());*/
+	}
 }

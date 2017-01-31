@@ -31,6 +31,9 @@ public class PlayerInput : MonoBehaviour {
         UpdateGunInput();
         if (leftMouse) {
             weaponManager.StartShooting();
+            if (Cursor.lockState != CursorLockMode.Locked)
+                Cursor.lockState = CursorLockMode.Locked;
+
         } else {
             weaponManager.StopShooting();
         }
