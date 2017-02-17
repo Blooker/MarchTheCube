@@ -4,11 +4,21 @@ using System.Collections;
 public class EnemyController : MonoBehaviour {
 
     [SerializeField]
-	private float health, moveSpeed, followDistance;
+    private float health, moveSpeed;
+    [SerializeField]
+    private int attackDamage;
+    [SerializeField]
+    private float attackInterval, followDistance, hearingDistance;
 
     private GameObject player;
+    private PlayerStats playerStats;
+    private WeaponManager playerWeapon;
+    private PlayerUI playerUI;
+
 	private Rigidbody rigid;
 	private bool foundPlayer = false;
+
+    private float attackIntervalTimer = 0;
 
     public void DamageEnemy (float damage) {
 		foundPlayer = true;
@@ -21,9 +31,25 @@ public class EnemyController : MonoBehaviour {
 
     public void SetPlayerObject (GameObject playerObj) {
         player = playerObj;
+        playerStats = playerObj.GetComponent<PlayerStats>();
+        playerWeapon = playerObj.GetComponent<WeaponManager>();
+        playerUI = playerObj.GetComponent<PlayerUI>();
     }
 
-	bool WithinPlayerDistance (Transform player) {
+    void DamagePlayer (int healthToRemove) {
+        if (attackIntervalTimer <= 0) {
+            playerStats.RemoveHealth(healthToRemove);
+            attackIntervalTimer = attackInterval;
+        }
+    }
+
+    void OnCollisionStay(Collision coll) {
+        if (coll.gameObject.tag == "Player") {
+            DamagePlayer(attackDamage);
+        }
+    }
+
+    bool WithinPlayerDistance (Transform player) {
 		if (Vector3.Distance(transform.position, player.position) <= followDistance) {
 			return true;
 		}
@@ -31,8 +57,22 @@ public class EnemyController : MonoBehaviour {
 		return false;
 	}
 
+    bool HeardPlayerGun (Transform player) {
+        if (Vector3.Distance(transform.position, player.position) <= hearingDistance && playerWeapon.PlayerIsShooting()) {
+            return true;
+        }
+
+        return false;
+    }
+
     void KillEnemy () {
         ObjectManager.RemoveFromLevelObjects(this.gameObject);
+
+        if (player != null) {
+            int enemyCount = ObjectManager.GetEnemiesInLevel().Count;
+            playerUI.SetEnemyCounter(enemyCount);
+        }
+
         Destroy(this.gameObject);
     }
 
@@ -62,10 +102,16 @@ public class EnemyController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        attackIntervalTimer -= Time.deltaTime;
+
         if(player != null) {
 			if (WithinPlayerDistance(player.transform) && !foundPlayer) {
 				foundPlayer = true;
 			}
+
+            if (HeardPlayerGun(player.transform) && !foundPlayer) {
+                foundPlayer = true;
+            }
 
 			if (foundPlayer) {
 				LookAtPlayer(player.transform);

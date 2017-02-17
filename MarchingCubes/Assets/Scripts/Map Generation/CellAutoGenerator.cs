@@ -5,7 +5,7 @@ using System;
 
 public class CellAutoGenerator : MonoBehaviour {
 
-    MapGenerator mapGenerator;
+    //MapGenerator mapGenerator;
 
     int width;
     int height;
@@ -19,7 +19,7 @@ public class CellAutoGenerator : MonoBehaviour {
     public int[,,] cellMap;
 
     void Start () {
-        mapGenerator = GetComponent<MapGenerator>();
+        //mapGenerator = GetComponent<MapGenerator>();
     }
 
     public void GenerateCellAuto(Vector3 size, int smoothingIterations, string seed) {
@@ -62,6 +62,8 @@ public class CellAutoGenerator : MonoBehaviour {
     }
 
     void RemoveCellsInColl() {
+        capColl.gameObject.SetActive(true);
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < depth; z++) {
@@ -71,6 +73,8 @@ public class CellAutoGenerator : MonoBehaviour {
                 }
             }
         }
+
+        capColl.gameObject.SetActive(false);
     }
 
     void SmoothMap() {

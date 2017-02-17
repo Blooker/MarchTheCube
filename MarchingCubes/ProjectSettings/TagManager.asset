@@ -8,6 +8,7 @@ TagManager:
   - Health
   - SpawnPoint
   - Enemy
+  - Player
   layers:
   - Default
   - TransparentFX

@@ -4,9 +4,6 @@ using System.Collections.Generic;
 
 public class ObjectManager : MonoBehaviour {
 
-    [SerializeField]
-    private GameObject player;
-
     static List<GameObject> objectsInLevel = new List<GameObject>();
 
     static List<GameObject> ammoInLevel = new List<GameObject>();

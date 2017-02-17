@@ -77,6 +77,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerMotor.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerSound.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerStats.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerUI.cs" />
     <Compile Include="Assets\Scripts\Weapons\Weapon.cs" />
     <Compile Include="Assets\Scripts\Weapons\WeaponManager.cs" />
   </ItemGroup>

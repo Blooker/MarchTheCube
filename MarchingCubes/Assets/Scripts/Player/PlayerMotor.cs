@@ -9,6 +9,8 @@ public class PlayerMotor : MonoBehaviour {
     private float cameraRotationX = 0f;
     private float curCamRotationX = 0f;
 
+    private PlayerStats playerStats;
+
 
     [SerializeField]
     private float camRotationLimit = 85f;
@@ -24,6 +26,7 @@ public class PlayerMotor : MonoBehaviour {
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
         cam = GetComponent<PlayerController>().GetPlayerCam();
+        playerStats = GetComponent<PlayerStats>();
 	}
 
     // Run every physics iteration
@@ -68,16 +71,13 @@ public class PlayerMotor : MonoBehaviour {
     void PerformHover () {
         // If hover velocity is being applied
         if (hoverVelocity != Vector3.zero) {
-            if (rb.velocity.y <= 15 && curHoverTime < hoverTimeLimit)
+            if (rb.velocity.y <= 15 && playerStats.JetpackTimeLeft())
                 rb.AddForce(hoverVelocity);
 
-            if (curHoverTime < hoverTimeLimit)
-                curHoverTime += Time.deltaTime;
+            playerStats.RemoveJetpackTime(Time.deltaTime);
 
         } else {
-            if (curHoverTime > 0)
-                curHoverTime -= Time.deltaTime/2;
-
+            playerStats.AddJetpackTime(Time.deltaTime/2);
         }
     }
 

@@ -5,7 +5,6 @@ public class WeaponManager : MonoBehaviour {
 
     [SerializeField]
     Weapon playerWeapon;
-    int ammo = 0;
 
     bool shooting = false;
     float shotInterval;
@@ -16,7 +15,9 @@ public class WeaponManager : MonoBehaviour {
     PlayerStats playerStats;
 
     public void StartShooting () {
-        shooting = true;
+        if (playerStats.GetAmmoCount() > 0)
+            shooting = true;
+
         shotInterval += Time.deltaTime;
 
         if (shotInterval > playerWeapon.fireRate) {
@@ -36,8 +37,10 @@ public class WeaponManager : MonoBehaviour {
 
             RaycastHit rayHit;
 
+            // If raycast has come into contact with a collider
             if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out rayHit, playerWeapon.range)) {
 
+                // If hit enemy, take away health
                 if (rayHit.collider.gameObject.tag == "Enemy") {
                     EnemyController enemyController = rayHit.collider.GetComponent<EnemyController>();
                     enemyController.DamageEnemy(playerWeapon.damage);
@@ -45,11 +48,13 @@ public class WeaponManager : MonoBehaviour {
 
             }
 
-            // If hit enemy, take away health
-
             // Take away ammo
             playerStats.RemoveAmmo(playerWeapon.bulletsPerShot);
         }
+    }
+
+    public bool PlayerIsShooting () {
+        return shooting;
     }
 
     void Start () {
@@ -62,6 +67,6 @@ public class WeaponManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-	    
+        //Debug.Log(shooting);
 	}
 }

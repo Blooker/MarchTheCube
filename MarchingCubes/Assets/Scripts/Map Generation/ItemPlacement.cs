@@ -19,7 +19,7 @@ public class ItemPlacement : MonoBehaviour {
     GameObject spawnPoint;
 
     public void PlaceRandomItems (string seed) {
-        ObjectManager objectManager = GameObject.Find("GameManager").GetComponent<ObjectManager>();
+        //ObjectManager objectManager = GameObject.Find("GameManager").GetComponent<ObjectManager>();
 
 
         System.Random pseudoRandom = new System.Random (seed.GetHashCode());
@@ -52,12 +52,15 @@ public class ItemPlacement : MonoBehaviour {
         Vector3 playerPos = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y + 2f, spawnPoint.transform.position.z);
         GameObject newPlayer = Instantiate(player, playerPos, Quaternion.identity) as GameObject;
 
-		newPlayer.GetComponent<PlayerUI>().SetCanvas(playerCanvas);
+		PlayerUI playerUI = newPlayer.GetComponent<PlayerUI>();
+        playerUI.SetCanvas(playerCanvas);
 
         List<GameObject> enemiesInLevel = ObjectManager.GetEnemiesInLevel();
         for (int i = 0; i < enemiesInLevel.Count; i++) {
             enemiesInLevel[i].GetComponent<EnemyController>().SetPlayerObject(newPlayer);
         }
+
+        playerUI.SetEnemyCounter(enemiesInLevel.Count);
     }
 
     GameObject ItemFromPercentage(int chance) {
