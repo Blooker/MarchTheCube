@@ -16,6 +16,8 @@ public class PlayerInput : MonoBehaviour {
 	void Start () {
         playerController = GetComponent<PlayerController>();
         weaponManager = GetComponent<WeaponManager>();
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
     }
 	
 	// Update is called once per frame
@@ -31,8 +33,10 @@ public class PlayerInput : MonoBehaviour {
         UpdateGunInput();
         if (leftMouse) {
             weaponManager.StartShooting();
-            if (Cursor.lockState != CursorLockMode.Locked)
+            if (Cursor.lockState != CursorLockMode.Locked) {
                 Cursor.lockState = CursorLockMode.Locked;
+				Cursor.visible = false;
+			}
 
         } else {
             weaponManager.StopShooting();

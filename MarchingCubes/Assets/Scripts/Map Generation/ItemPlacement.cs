@@ -7,7 +7,7 @@ using System.Linq;
 public class ItemPlacement : MonoBehaviour {
 
 	[SerializeField]
-	GameObject player;
+	GameObject player, playerCanvas;
 
     [SerializeField]
 	GameObject[] items;
@@ -43,7 +43,7 @@ public class ItemPlacement : MonoBehaviour {
 			}
 		}
 
-		Debug.Log (spawnPoint);
+		//Debug.Log (spawnPoint);
 
         SpawnPlayer();
     }
@@ -51,6 +51,8 @@ public class ItemPlacement : MonoBehaviour {
     void SpawnPlayer () {
         Vector3 playerPos = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y + 2f, spawnPoint.transform.position.z);
         GameObject newPlayer = Instantiate(player, playerPos, Quaternion.identity) as GameObject;
+
+		newPlayer.GetComponent<PlayerUI>().SetCanvas(playerCanvas);
 
         List<GameObject> enemiesInLevel = ObjectManager.GetEnemiesInLevel();
         for (int i = 0; i < enemiesInLevel.Count; i++) {

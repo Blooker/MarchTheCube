@@ -174,6 +174,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 482917550}
+  - {fileID: 977621701}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_AnchorMin: {x: 0, y: 0}
@@ -359,6 +360,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
+--- !u!115 &479309310
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  serializedVersion: 4
+  m_Script: 
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_ExecutionOrder: 0
+  m_ClassName: Text
+  m_Namespace: UnityEngine.UI
+  m_AssemblyName: UnityEngine.UI.dll
+  m_IsEditorScript: 0
 --- !u!1 &482917549
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,7 +386,7 @@ GameObject:
   - 222: {fileID: 482917552}
   - 114: {fileID: 482917551}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Crosshair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -527,6 +543,72 @@ CapsuleCollider:
   m_Height: 30
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &977621700
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 977621701}
+  - 222: {fileID: 977621703}
+  - 114: {fileID: 977621702}
+  m_Layer: 5
+  m_Name: AmmoCounter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &977621701
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 977621700}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 140401382}
+  m_RootOrder: 1
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 5, y: 5}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &977621702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 977621700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 479309310}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Ammo: '
+--- !u!222 &977621703
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 977621700}
 --- !u!1 &988373964
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,6 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f1d4fc0e4eda9841aaf7bea4f3ea1c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &1400200423
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,6 +835,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 132984, guid: e6dbbe29361af2a4fba51993b1afc759, type: 2}
+  playerCanvas: {fileID: 140401378}
   items:
   - {fileID: 0}
   - {fileID: 0}
@@ -759,7 +843,7 @@ MonoBehaviour:
   - {fileID: 174406, guid: e4f996cef61cbd940838e9608ff9f9ff, type: 2}
   - {fileID: 180958, guid: be246fbda956c314c9a0d262edf07f67, type: 2}
   - {fileID: 156764, guid: 288f62ff0bfd81245a9cb595b888eb0f, type: 2}
-  itemPlacementChances: 040000000300000005000000030000000100000001000000
+  itemPlacementChances: 040000000300000005000000060000000200000001000000
 --- !u!114 &1400200431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -774,5 +858,5 @@ MonoBehaviour:
   mapSize: {x: 200, y: 50, z: 200}
   smoothingIterations: 30
   cubeSize: 1
-  seed: callun petters
+  seed: epic memes
   useRandomSeed: 0

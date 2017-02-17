@@ -111,11 +111,11 @@ Material:
       data:
         first:
           name: _Cutoff
-        second: 0.5
+        second: .5
       data:
         first:
           name: _Parallax
-        second: 0.02
+        second: .0199999996
       data:
         first:
           name: _ZWrite
@@ -147,11 +147,11 @@ Material:
       data:
         first:
           name: _Metallic
-        second: 0.871
+        second: 0
       data:
         first:
           name: _DitherThreshold
-        second: -0.8
+        second: -.800000012
       data:
         first:
           name: _PaletteMix
@@ -160,7 +160,7 @@ Material:
       data:
         first:
           name: _LightDir
-        second: {r: 0, g: 8.3, b: 0, a: 1}
+        second: {r: 0, g: 8.30000019, b: 0, a: 1}
       data:
         first:
           name: _EmissionColor

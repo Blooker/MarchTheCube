@@ -5,6 +5,7 @@ public class PlayerStats : MonoBehaviour {
 
     [SerializeField]
 	private int health, ammo;
+	private PlayerUI playerUI;
 
 	public void AddHealth (int _health) {
 		health += _health;
@@ -20,13 +21,20 @@ public class PlayerStats : MonoBehaviour {
 
 	public void AddAmmo (int _ammo) {
 		ammo += _ammo;
+		playerUI.SetAmmoCounter(ammo);
 	}
 
 	public void RemoveAmmo (int _ammo) {
 		ammo -= _ammo;
+		playerUI.SetAmmoCounter(ammo);
 	}
 
 	public int GetAmmoCount () {
 		return ammo;
+	}
+
+	void Start () {
+		playerUI = GetComponent<PlayerUI>();
+		playerUI.SetAmmoCounter(ammo);
 	}
 }
