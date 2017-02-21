@@ -8,17 +8,22 @@ public class PlayerUI : MonoBehaviour {
     float maxJetpackGuageSize;
 
 	GameObject playerCanvas;
-    Text healthCounter, ammoCounter, enemyCounter;
+    Text countdownTimer, healthCounter, ammoCounter, enemyCounter;
     RectTransform jetpackGuage;
 
 	public void SetCanvas (GameObject canvas) {
 		playerCanvas = canvas;
 
+        countdownTimer = playerCanvas.transform.FindChild("CountdownTimer").gameObject.GetComponent<Text>();
         healthCounter = playerCanvas.transform.FindChild("HealthCounter").gameObject.GetComponent<Text>();
 		ammoCounter = playerCanvas.transform.FindChild("AmmoCounter").gameObject.GetComponent<Text>();
         enemyCounter = playerCanvas.transform.FindChild("EnemyCounter").gameObject.GetComponent<Text>();
 
         jetpackGuage = playerCanvas.transform.FindChild("JetpackTime").FindChild("JetpackGuage").gameObject.GetComponent<RectTransform>();
+    }
+
+    public void SetCountdownTimer (string time) {
+        countdownTimer.text = "<b>" + time + "</b>";
     }
 
     public void SetHealthCounter(int health) {

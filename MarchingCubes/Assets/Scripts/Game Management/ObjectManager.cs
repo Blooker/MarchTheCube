@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class ObjectManager : MonoBehaviour {
 
+    GameObject currentPlayer;
     static List<GameObject> objectsInLevel = new List<GameObject>();
 
     static List<GameObject> ammoInLevel = new List<GameObject>();
@@ -11,7 +12,7 @@ public class ObjectManager : MonoBehaviour {
     static List<GameObject> enemiesInLevel = new List<GameObject>();
 
     static GameObject spawnPoint;
-	
+
     public static void RemoveEnemy (GameObject enemy) {
         enemiesInLevel.Remove(enemy);
         Debug.Log(enemiesInLevel.Count);
@@ -88,12 +89,12 @@ public class ObjectManager : MonoBehaviour {
 		}
 	}
 
-    public static void SpawnPlayer () {
-        
+    public GameObject GetCurrentPlayer () {
+        return currentPlayer;
     }
 
-    void InstantiatePlayer () {
-
+    public void SetCurrentPlayer(GameObject player) {
+        currentPlayer = player;
     }
 
     public static List<GameObject> GetEnemiesInLevel () {

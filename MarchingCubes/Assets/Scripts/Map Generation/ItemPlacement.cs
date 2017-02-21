@@ -13,15 +13,17 @@ public class ItemPlacement : MonoBehaviour {
 	GameObject[] items;
 
     [SerializeField]
+    ObjectManager objectManager;
+
+    [SerializeField]
     int[] itemPlacementChances;
+
+    bool playerSpawned = false;
 
 	List<Vector3> floorTilesPos = new List<Vector3>();
     GameObject spawnPoint;
 
     public void PlaceRandomItems (string seed) {
-        //ObjectManager objectManager = GameObject.Find("GameManager").GetComponent<ObjectManager>();
-
-
         System.Random pseudoRandom = new System.Random (seed.GetHashCode());
 
 		for (int i = 0; i < floorTilesPos.Count; i++) {
@@ -51,6 +53,7 @@ public class ItemPlacement : MonoBehaviour {
     void SpawnPlayer () {
         Vector3 playerPos = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y + 2f, spawnPoint.transform.position.z);
         GameObject newPlayer = Instantiate(player, playerPos, Quaternion.identity) as GameObject;
+        objectManager.SetCurrentPlayer(newPlayer);
 
 		PlayerUI playerUI = newPlayer.GetComponent<PlayerUI>();
         playerUI.SetCanvas(playerCanvas);

@@ -18,6 +18,8 @@ public class EnemyController : MonoBehaviour {
 	private Rigidbody rigid;
 	private bool foundPlayer = false;
 
+    private bool canMove = true, canLook = true;
+
     private float attackIntervalTimer = 0;
 
     public void DamageEnemy (float damage) {
@@ -34,6 +36,14 @@ public class EnemyController : MonoBehaviour {
         playerStats = playerObj.GetComponent<PlayerStats>();
         playerWeapon = playerObj.GetComponent<WeaponManager>();
         playerUI = playerObj.GetComponent<PlayerUI>();
+    }
+
+    public void AbleToMove (bool _canMove) {
+        canMove = _canMove;
+    }
+
+    public void AbleToLook(bool _canLook) {
+        canLook = _canLook;
     }
 
     void DamagePlayer (int healthToRemove) {
@@ -77,15 +87,17 @@ public class EnemyController : MonoBehaviour {
     }
 
     void LookAtPlayer (Transform player) {
-		//Quaternion oldRot = transform.rotation;
-        transform.LookAt(player);
-		//Quaternion newRot = transform.rotation;
+        if (!canLook)
+            return;
 
-		//transform.rotation = Quaternion.Slerp(oldRot, newRot, 0.25f);
+        transform.LookAt(player);
     }
 
     void MoveTowardsPlayer (Transform player) {
-		rigid.velocity = new Vector3(0, rigid.velocity.y, 0);
+        if (!canMove)
+            return;
+
+        rigid.velocity = new Vector3(0, rigid.velocity.y, 0);
 		Vector3 enemyVel = new Vector3(transform.forward.x, 0, transform.forward.z);
 		rigid.MovePosition(rigid.position + enemyVel * moveSpeed * Time.fixedDeltaTime);
     }
@@ -102,6 +114,7 @@ public class EnemyController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        AbleToMove(GameCountdown.CountdownComplete());
         attackIntervalTimer -= Time.deltaTime;
 
         if(player != null) {

@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour {
 
 		switch (coll.gameObject.tag) {
 			case ("Ammo"):
-				playerStats.AddAmmo(15);
+				playerStats.AddAmmo(20);
                 destroyTriggerObj = true;
 				break;
 			case ("Health"):

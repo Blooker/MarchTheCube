@@ -25,13 +25,13 @@ GameObject:
   - 4: {fileID: 482298}
   - 136: {fileID: 13652538}
   - 54: {fileID: 5431974}
+  - 114: {fileID: 11420036}
   - 114: {fileID: 11421710}
   - 114: {fileID: 11448208}
-  - 114: {fileID: 11420036}
-  - 114: {fileID: 11472970}
-  - 114: {fileID: 11496218}
   - 114: {fileID: 11457178}
+  - 114: {fileID: 11496218}
   - 114: {fileID: 11445112}
+  - 114: {fileID: 11472970}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
