@@ -2,18 +2,23 @@
 using System.Collections;
 
 public class PlayerStats : MonoBehaviour {
-
+	
     [SerializeField]
 	private int health, ammo;
+
     [SerializeField]
     private float jetpackTimeLimit = 5f;
 
-    private float jetpackTime;
+	GameManager gameManager;
 
+	private bool playerDead = false;
+	private float jetpackTime;
 	private PlayerUI playerUI;
 
     public void KillPlayer () {
-        Debug.Log("Yo ass died........");
+        Debug.Log("You're dead");
+		gameManager.LoseGame();
+		playerDead = true;
     }
 
     #region Health functions
@@ -23,11 +28,13 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	public void RemoveHealth (int _health) {
-		health -= _health;
-        UpdateHealthCounter();
+        if (!playerDead) {
+            health -= _health;
+            UpdateHealthCounter();
 
-        if (health <= 0) {
-            KillPlayer();
+            if (health <= 0) {
+                KillPlayer();
+            }
         }
     }
 
@@ -98,6 +105,8 @@ public class PlayerStats : MonoBehaviour {
     void Start () {
 		playerUI = GetComponent<PlayerUI>();
         jetpackTime = jetpackTimeLimit;
+
+		gameManager = GameObject.Find ("GameManager").GetComponent<GameManager>();
 
         UpdateHealthCounter();
         UpdateAmmoCounter();

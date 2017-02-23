@@ -22,6 +22,10 @@ public class PlayerUI : MonoBehaviour {
         jetpackGuage = playerCanvas.transform.FindChild("JetpackTime").FindChild("JetpackGuage").gameObject.GetComponent<RectTransform>();
     }
 
+	public void ShowPlayerUI (bool showUI) {
+		playerCanvas.SetActive(showUI);
+	}
+
     public void SetCountdownTimer (string time) {
         countdownTimer.text = "<b>" + time + "</b>";
     }

@@ -11,21 +11,23 @@ public class PlayerInput : MonoBehaviour {
     float xRot, yRot;
 
     bool leftMouse, rightMouse;
-    bool canMove = true, canLook = true, canHover = true, canShoot = true;
+    bool canMove, canLook , canHover, canShoot ;
 
 	// Use this for initialization
 	void Start () {
         playerController = GetComponent<PlayerController>();
         weaponManager = GetComponent<WeaponManager>();
+
+        DisableAllInput();
+        AbleToLook(true);
+
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        AbleToMove(GameCountdown.CountdownComplete());
-        AbleToHover(GameCountdown.CountdownComplete());
-        AbleToShoot(GameCountdown.CountdownComplete());
+        Debug.Log(canMove.ToString() + ", " + canLook.ToString() + ", " + canHover.ToString() + ", " + canShoot.ToString());
 
         UpdateMoveInput();
         UpdateHoverInput();
@@ -50,34 +52,59 @@ public class PlayerInput : MonoBehaviour {
     }
 
     public void UpdateMoveInput () {
-        if (!canMove)
+        if (!canMove) {
+            xMov = 0;
+            yMov = 0;
             return;
+        }
 
         xMov = Input.GetAxisRaw("Horizontal");
         zMov = Input.GetAxisRaw("Vertical");
     }
 
     public void UpdateHoverInput () {
-        if (!canHover)
+        if (!canHover) {
+            yMov = 0;
             return;
+        }
 
         yMov = Input.GetAxisRaw("Jump");
     }
 
     public void UpdateLookInput () {
-        if (!canLook)
+        if (!canLook) {
+            xRot = 0;
+            yRot = 0;
             return;
+        }
 
         xRot = Input.GetAxisRaw("Mouse Y");
         yRot = Input.GetAxisRaw("Mouse X");
     }
 
     public void UpdateGunInput () {
-        if (!canShoot)
+        if (!canShoot) {
+            leftMouse = false;
+            rightMouse = false;
             return;
+        }
 
         leftMouse = Input.GetButton("Fire1");
         rightMouse = Input.GetButton("Fire2");
+    }
+
+    public void EnableAllInput () {
+        AbleToMove(true);
+        AbleToLook(true);
+        AbleToHover(true);
+        AbleToShoot(true);
+    }
+
+    public void DisableAllInput() {
+        AbleToMove(false);
+        AbleToLook(false);
+        AbleToHover(false);
+        AbleToShoot(false);
     }
 
     #region Accessor functions
@@ -86,7 +113,7 @@ public class PlayerInput : MonoBehaviour {
     }
 
     public void AbleToLook(bool _canLook) {
-        canMove = _canLook;
+        canLook = _canLook;
     }
 
     public void AbleToHover (bool _canHover) {

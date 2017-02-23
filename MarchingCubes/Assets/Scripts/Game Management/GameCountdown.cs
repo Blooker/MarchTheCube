@@ -13,9 +13,12 @@ public class GameCountdown : MonoBehaviour {
     static bool timerComplete = false;
     bool timerDepleting;
 
+    GameManager gameManager;
+
 	// Use this for initialization
 	void Start () {
         ResetCountdown();
+        gameManager = GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -24,7 +27,6 @@ public class GameCountdown : MonoBehaviour {
             playerUI = GetComponent<ObjectManager>().GetCurrentPlayer().GetComponent<PlayerUI>();
             StartCountdown();
         }
-
 
         if (timerDepleting)
             countdownTimer -= Time.deltaTime;
@@ -35,6 +37,7 @@ public class GameCountdown : MonoBehaviour {
         } else if (countdownTimer <= 0) {
             timerComplete = true;
             playerUI.SetCountdownTimer("Go!!");
+            gameManager.StartGame();
 
         } else {
             playerUI.SetCountdownTimer((Mathf.CeilToInt(countdownTimer)).ToString());

@@ -11,7 +11,7 @@ public class ItemPlacement : MonoBehaviour {
 
     [SerializeField]
 	GameObject[] items;
-
+	
     [SerializeField]
     ObjectManager objectManager;
 
