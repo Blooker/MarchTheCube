@@ -112,4 +112,10 @@ public class PlayerStats : MonoBehaviour {
         UpdateAmmoCounter();
         UpdateJetpackGuage();
 	}
+
+    void Update () {
+        if (Input.GetKeyDown(KeyCode.M)) {
+            KillPlayer();
+        }
+    }
 }

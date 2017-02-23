@@ -21,76 +21,75 @@ public class PlayerInput : MonoBehaviour {
         DisableAllInput();
         AbleToLook(true);
 
-		Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(canMove.ToString() + ", " + canLook.ToString() + ", " + canHover.ToString() + ", " + canShoot.ToString());
+        //Debug.Log(xMov.ToString() + ", " + yMov.ToString());
 
         UpdateMoveInput();
         UpdateHoverInput();
         UpdateLookInput();
-
-        playerController.ApplyMovement(xMov, zMov);
-        playerController.ApplyHover(yMov);
-        playerController.ApplyCamRotation(xRot, yRot);
-
         UpdateGunInput();
-        if (leftMouse) {
-            weaponManager.StartShooting();
-            if (Cursor.lockState != CursorLockMode.Locked) {
-                Cursor.lockState = CursorLockMode.Locked;
-				Cursor.visible = false;
-			}
-
-        } else {
-            weaponManager.StopShooting();
-        }
-
     }
 
     public void UpdateMoveInput () {
         if (!canMove) {
             xMov = 0;
-            yMov = 0;
-            return;
+            zMov = 0;
+
+        } else {
+            xMov = Input.GetAxisRaw("Horizontal");
+            zMov = Input.GetAxisRaw("Vertical");
+
         }
 
-        xMov = Input.GetAxisRaw("Horizontal");
-        zMov = Input.GetAxisRaw("Vertical");
+        playerController.ApplyMovement(xMov, zMov);
     }
 
-    public void UpdateHoverInput () {
+    public void UpdateHoverInput() {
         if (!canHover) {
             yMov = 0;
-            return;
+        } else {
+            yMov = Input.GetAxisRaw("Jump");
         }
 
-        yMov = Input.GetAxisRaw("Jump");
+        playerController.ApplyHover(yMov);
     }
 
     public void UpdateLookInput () {
         if (!canLook) {
             xRot = 0;
             yRot = 0;
-            return;
+        } else {
+            xRot = Input.GetAxisRaw("Mouse Y");
+            yRot = Input.GetAxisRaw("Mouse X");
         }
 
-        xRot = Input.GetAxisRaw("Mouse Y");
-        yRot = Input.GetAxisRaw("Mouse X");
+        playerController.ApplyCamRotation(xRot, yRot);
     }
 
     public void UpdateGunInput () {
         if (!canShoot) {
             leftMouse = false;
             rightMouse = false;
-            return;
+        } else {
+            leftMouse = Input.GetButton("Fire1");
+            rightMouse = Input.GetButton("Fire2");
         }
 
-        leftMouse = Input.GetButton("Fire1");
-        rightMouse = Input.GetButton("Fire2");
+        if (leftMouse) {
+            weaponManager.StartShooting();
+            if (Cursor.lockState != CursorLockMode.Locked) {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+
+        } else {
+            weaponManager.StopShooting();
+        }
     }
 
     public void EnableAllInput () {

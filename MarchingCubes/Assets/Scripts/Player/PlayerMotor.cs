@@ -61,11 +61,13 @@ public class PlayerMotor : MonoBehaviour {
     }
 
     // Performs movement along the X/Z axis based on player velocity.
-    void PerformMovement () {
+    void PerformMovement() {
         rb.velocity = new Vector3(0, rb.velocity.y, 0);
-		if (moveVelocity != Vector3.zero)
-			rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
-	}
+        Debug.Log("moveVelocity: " + moveVelocity.ToString() + "\nrigid velocity: " + rb.velocity.ToString() + "moveVelocity != Vector3.zero: " + (moveVelocity != Vector3.zero).ToString());
+        if (moveVelocity != Vector3.zero) {
+            rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
+        }
+    }
 
     // Performs movement along the Y axis based on hover velocity.
     void PerformHover () {

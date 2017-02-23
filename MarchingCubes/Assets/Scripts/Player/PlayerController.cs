@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		motor = GetComponent<PlayerMotor> ();
 		playerStats = GetComponent<PlayerStats> ();
-        Cursor.lockState = CursorLockMode.Locked;
 	}
 
     public void ApplyMovement (float xMov, float zMov) {
@@ -31,6 +30,8 @@ public class PlayerController : MonoBehaviour {
 
         // Final movement vector
         Vector3 _velocity = (_movHorizontal + _movForward).normalized * speed;
+
+        //Debug.Log(xMov.ToString() + ", " + zMov.ToString() + "\n" + _velocity.ToString());
 
         // Apply movement
         motor.SetVelocity(_velocity);
