@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ObjectManager : MonoBehaviour {
-
+	
     GameObject currentPlayer;
     static List<GameObject> objectsInLevel = new List<GameObject>();
 
@@ -115,7 +115,7 @@ public class ObjectManager : MonoBehaviour {
 	
     // Use this for initialization
     void Start () {
-	
+
 	}
 	
 	// Update is called once per frame
