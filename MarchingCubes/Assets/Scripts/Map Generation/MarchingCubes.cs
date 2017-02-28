@@ -28,7 +28,7 @@ public class MarchingCubes : MonoBehaviour {
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
-        mesh.Optimize();
+        ;
 
         MeshCollider meshColl = GetComponent<MeshCollider>();
         meshColl.sharedMesh = mesh;
