@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -40,8 +41,12 @@ public class MarchingCubes : MonoBehaviour {
         int[] cubeMeshData = new int[12];
         Node[] edgeNodes = new Node[12];
 
+        int ambigCaseIndex = Array.IndexOf(LookupTables.ambigCases, caseValue);
+
         for (int i = caseValue * 15; i < (caseValue * 15) + 12; i++) {
-            if (LookupTables.SFaces[i] != -1) {
+            if (ambigCaseIndex != -1 && LookupTables.AFaces[i] != -1) {
+                cubeMeshData[i - (caseValue * 15)] = LookupTables.AFaces[i];
+            } else if (LookupTables.SFaces[i] != -1) {
                 cubeMeshData[i - (caseValue * 15)] = LookupTables.SFaces[i];
             } else {
                 cubeMeshData[i - (caseValue * 15)] = -1;
