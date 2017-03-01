@@ -20,8 +20,6 @@ public class MapGenerator : MonoBehaviour {
 
     [SerializeField]
     string seed;
-    [SerializeField]
-    bool useRandomSeed;
 
     CellAutoGenerator cellAuto;
     MarchingCubes marchCubes;
@@ -32,8 +30,6 @@ public class MapGenerator : MonoBehaviour {
         cellAuto = GetComponent<CellAutoGenerator>();
         marchCubes = GetComponent<MarchingCubes>();
         itemPlacement = GetComponent<ItemPlacement>();
-		
-        GenerateMap();
 	}
 	
 	// Update is called once per frame
@@ -45,9 +41,6 @@ public class MapGenerator : MonoBehaviour {
     /// Generates an in-game map.
     /// </summary>
     public void GenerateMap () {
-        if (useRandomSeed)
-            seed = Time.time.ToString();
-
 		cellAuto.GenerateCellAuto ( mapSize, smoothingIterations, seed );
         marchCubes.CreateCubeGrid( cellAuto.GetCellMap(), cubeSize );
 
@@ -85,25 +78,6 @@ public class MapGenerator : MonoBehaviour {
     public CubeGrid GetCubeGrid () {
         return cubeGrid;
     }*/
-    #endregion
-
-    #region Use random seed methods
-
-    /// <summary>
-    /// Used to set whether the map is generated randomly or not.
-    /// </summary>
-    /// <param name="_useRandomSeed">Determines whether the map uses a random seed.</param>
-    public void SetUseRandomSeed (bool _useRandomSeed) {
-        useRandomSeed = _useRandomSeed;
-    }
-
-    /// <summary>
-    /// Returns true if map has been randomly generated, false otherwise. 
-    /// </summary>
-    /// <returns>Boolean value</returns>
-    public bool GetUseRandomSeed() {
-        return useRandomSeed;
-    }
     #endregion
 
     #region Map size methods

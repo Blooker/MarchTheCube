@@ -39,7 +39,7 @@ public class GameCountdown : MonoBehaviour {
             playerUI.SetCountdownTimer("Go!!");
             gameManager.StartGame();
 
-        } else {
+        } else if (playerUI != null) {
             playerUI.SetCountdownTimer((Mathf.CeilToInt(countdownTimer)).ToString());
         }
 	}

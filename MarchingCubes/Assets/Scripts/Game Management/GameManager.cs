@@ -3,23 +3,35 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
+    bool gameStarted = false;
+
 	ObjectManager objectManager;
 	MenuManager menuManager;
 
 	public void StartGame () {
+        gameStarted = true;
+
         GameObject currentPlayer = objectManager.GetCurrentPlayer();
         PlayerInput playerInput = currentPlayer.GetComponent<PlayerInput>();
 
         playerInput.EnableAllInput();
     }
 
+    public bool GameWon () {
+        return ObjectManager.GetEnemiesInLevel().Count <= 0;
+    }
+
 	public void LoseGame () {
-		EnableMenuInput();
+        gameStarted = false;
+
+        EnableMenuInput();
 		menuManager.ShowGameLostUI();
 	}
 
 	public void WinGame () {
-		EnableMenuInput();
+        gameStarted = false;
+
+        EnableMenuInput();
 		menuManager.ShowGameWonUI();
 	}
 
@@ -46,7 +58,7 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (ObjectManager.GetEnemiesInLevel().Count <= 0)
-			WinGame();
+        if (gameStarted && GameWon())
+            WinGame();
 	}
 }
