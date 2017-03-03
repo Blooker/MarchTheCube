@@ -17,8 +17,8 @@ public class MenuManager : MonoBehaviour {
     Canvas gameOverUI;
 
     public void LoadMainGame () {
-        string seed = gameSetupUI.transform.FindChild("SeedInputField").FindChild("Text").GetComponent<Text>().text;
-        mapInfo.seed = seed;
+        string seedInputText = gameSetupUI.transform.FindChild("SeedInputField").FindChild("Text").GetComponent<Text>().text;
+        mapInfo.seed = seedInputText;
 
         gameSetupUI.gameObject.SetActive(false);
 
@@ -28,11 +28,25 @@ public class MenuManager : MonoBehaviour {
     }
 
     public void LoadGameSetup () {
+        ObjectManager.ClearObjects();
         SceneManager.LoadScene("GameSetup");
     }
 
-    public void GenerateRandomSeed () {
+    public void QuitGame () {
+        Application.Quit();
+    }
 
+    public void GenerateRandomSeed () {
+        string glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
+        string randomSeed = "";
+
+        int charAmount = Random.Range(8, 15); //set those to the minimum and maximum length of your string
+        for (int i = 0; i < charAmount; i++) {
+            randomSeed += glyphs[Random.Range(0, glyphs.Length)];
+        }
+
+        InputField seedInputField = gameSetupUI.transform.FindChild("SeedInputField").GetComponent<InputField>();
+        seedInputField.text = randomSeed;
     }
 
 	public void ShowGameLostUI () {
@@ -63,35 +77,6 @@ public class MenuManager : MonoBehaviour {
         if (gameOverUI != null)
             gameOverUI.gameObject.SetActive(false);
 	}
-
-    public void FindMapGenerator () {
-        GameObject mapGeneratorObj = null;
-        mapGeneratorObj = GameObject.Find("MapGenerator");
-
-        Debug.Log(mapGeneratorObj);
-
-        mapGenerator = mapGeneratorObj.GetComponent<MapGenerator>();
-    }
-
-    /*IEnumerator StartMainGame (string seed) {
-        yield return new WaitForSeconds(2);
-
-        gameOverUI = GameObject.Find("GameOverUI").GetComponent<Canvas>();
-
-        HideGameEndUI();
-        FindMapGenerator();
-
-        gameSetupUI = null;
-
-        if (mapGenerator != null) {
-            mapGenerator.SetSeed(seed);
-            mapGenerator.GenerateMap();
-        } else {
-            Debug.Log("Couldn't find map generator");
-        }
-
-        GetComponent<GameCountdown>().StartCountdown();
-    }*/
 
 	// Use this for initialization
 	void Start () {

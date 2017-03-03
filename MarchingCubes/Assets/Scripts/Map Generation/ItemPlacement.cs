@@ -60,7 +60,10 @@ public class ItemPlacement : MonoBehaviour {
 
         List<GameObject> enemiesInLevel = ObjectManager.GetEnemiesInLevel();
         for (int i = 0; i < enemiesInLevel.Count; i++) {
-            enemiesInLevel[i].GetComponent<EnemyController>().SetPlayerObject(newPlayer);
+            EnemyController enemyControl = enemiesInLevel[i].GetComponent<EnemyController>();
+
+            if (enemyControl != null)
+                enemyControl.SetPlayerObject(newPlayer);
         }
 
         playerUI.SetEnemyCounter(enemiesInLevel.Count);
@@ -93,9 +96,9 @@ public class ItemPlacement : MonoBehaviour {
 
     #region Floor tile positions methods
 
-        /// <summary>
-        /// Gets all floor tiles in the map and adds them to a list of floor tiles.
-        /// </summary>
+    /// <summary>
+    /// Gets positions of all floor tiles in the map and adds them to a list of floor tiles.
+    /// </summary>
     public void LocateFloorTilesPos(CubeGrid cubeGrid, float cubeSize) {
 		List<Vector3> _floorTilesPos = new List<Vector3>();
 		_floorTilesPos.Clear ();

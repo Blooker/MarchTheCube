@@ -22,6 +22,7 @@ public class MarchingCubes : MonoBehaviour {
         }
 
         Mesh mesh = new Mesh();
+        mesh.Clear();
         MeshFilter meshFilter = GetComponent<MeshFilter>();
         
         meshFilter.mesh = mesh;
@@ -29,7 +30,6 @@ public class MarchingCubes : MonoBehaviour {
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
-        ;
 
         MeshCollider meshColl = GetComponent<MeshCollider>();
         meshColl.sharedMesh = mesh;
