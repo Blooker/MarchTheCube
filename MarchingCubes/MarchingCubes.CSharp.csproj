@@ -81,10 +81,10 @@
     <Compile Include="Assets\Scripts\Game Management\MenuManager.cs" />
     <Compile Include="Assets\Scripts\Game Management\ObjectManager.cs" />
     <Compile Include="Assets\Scripts\Map Generation\CellAutoGenerator.cs" />
-    <Compile Include="Assets\Scripts\Map Generation\ItemPlacement.cs" />
     <Compile Include="Assets\Scripts\Map Generation\LookupTables.cs" />
     <Compile Include="Assets\Scripts\Map Generation\MapGenerator.cs" />
     <Compile Include="Assets\Scripts\Map Generation\MarchingCubes.cs" />
+    <Compile Include="Assets\Scripts\Map Generation\ObjectPlacement.cs" />
     <Compile Include="Assets\Scripts\Misc\CameraMove.cs" />
     <Compile Include="Assets\Scripts\Misc\CubeScript.cs" />
     <Compile Include="Assets\Scripts\Misc\SimpleSmoothMouseLook.cs" />
@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerSound.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerStats.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerUI.cs" />
+    <Compile Include="Assets\Scripts\Weapons\DamageIndicator.cs" />
     <Compile Include="Assets\Scripts\Weapons\Weapon.cs" />
     <Compile Include="Assets\Scripts\Weapons\WeaponManager.cs" />
   </ItemGroup>

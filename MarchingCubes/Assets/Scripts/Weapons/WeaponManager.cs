@@ -13,6 +13,7 @@ public class WeaponManager : MonoBehaviour {
 
     PlayerSound playerSound;
     PlayerStats playerStats;
+    PlayerUI playerUI;
 
     public void StartShooting () {
         if (playerStats.GetAmmoCount() > 0)
@@ -39,11 +40,11 @@ public class WeaponManager : MonoBehaviour {
 
             // If raycast has come into contact with a collider
             if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out rayHit, playerWeapon.range)) {
-
                 // If hit enemy, take away health
                 if (rayHit.collider.gameObject.tag == "Enemy") {
                     EnemyController enemyController = rayHit.collider.GetComponent<EnemyController>();
                     enemyController.DamageEnemy(playerWeapon.damage);
+                    playerUI.CreateDamageIndicator(playerWeapon.damage, rayHit.point);
                 }
 
             }
@@ -61,6 +62,7 @@ public class WeaponManager : MonoBehaviour {
         playerCam = GetComponent<PlayerController>().GetPlayerCam();
         playerSound = GetComponent<PlayerSound>();
         playerStats = GetComponent<PlayerStats>();
+        playerUI = GetComponent<PlayerUI>();
 
         shotInterval = playerWeapon.fireRate;
     }

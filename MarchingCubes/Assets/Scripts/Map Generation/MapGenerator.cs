@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(CellAutoGenerator))]
 [RequireComponent(typeof(MarchingCubes))]
-[RequireComponent(typeof(ItemPlacement))]
+[RequireComponent(typeof(ObjectPlacement))]
 
 public class MapGenerator : MonoBehaviour {
 
@@ -23,13 +23,13 @@ public class MapGenerator : MonoBehaviour {
 
     CellAutoGenerator cellAuto;
     MarchingCubes marchCubes;
-    ItemPlacement itemPlacement;
+    ObjectPlacement objectPlacement;
 
 	// Use this for initialization
 	void Start () {
         cellAuto = GetComponent<CellAutoGenerator>();
         marchCubes = GetComponent<MarchingCubes>();
-        itemPlacement = GetComponent<ItemPlacement>();
+        objectPlacement = GetComponent<ObjectPlacement>();
 	}
 	
 	// Update is called once per frame
@@ -46,8 +46,8 @@ public class MapGenerator : MonoBehaviour {
 
         marchCubes.GenerateMesh();
 		
-        itemPlacement.LocateFloorTilesPos( marchCubes.GetCubeGrid(), cubeSize );
-		itemPlacement.PlaceRandomItems ( seed );
+        objectPlacement.LocateFloorTilesPos( marchCubes.GetCubeGrid(), cubeSize );
+		objectPlacement.PlaceRandomObjects ( seed );
     }
 
     #region Seed methods

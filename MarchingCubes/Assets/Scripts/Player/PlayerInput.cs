@@ -4,6 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(PlayerController), typeof(WeaponManager))]
 public class PlayerInput : MonoBehaviour {
 
+    public GameManager gameManager;
+
     PlayerController playerController;
     WeaponManager weaponManager;
 
@@ -11,7 +13,9 @@ public class PlayerInput : MonoBehaviour {
     float xRot, yRot;
 
     bool leftMouse, rightMouse;
-    bool canMove, canLook , canHover, canShoot ;
+    bool canMove, canLook , canHover, canShoot, canPause;
+
+    bool pauseButton;
 
 	// Use this for initialization
 	void Start () {
@@ -27,14 +31,14 @@ public class PlayerInput : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //Debug.Log(xMov.ToString() + ", " + yMov.ToString());
-
         UpdateMoveInput();
         UpdateHoverInput();
         UpdateLookInput();
         UpdateGunInput();
+        UpdatePauseInput();
     }
 
+    #region Input update functions
     public void UpdateMoveInput () {
         if (!canMove) {
             xMov = 0;
@@ -92,11 +96,22 @@ public class PlayerInput : MonoBehaviour {
         }
     }
 
+    public void UpdatePauseInput() {
+        if (!canPause)
+            return;
+
+        pauseButton = Input.GetKeyDown(KeyCode.Escape);
+
+        if (pauseButton)
+            gameManager.TogglePause();
+    }
+
     public void EnableAllInput () {
         AbleToMove(true);
         AbleToLook(true);
         AbleToHover(true);
         AbleToShoot(true);
+        AbleToPause(true);
     }
 
     public void DisableAllInput() {
@@ -104,7 +119,9 @@ public class PlayerInput : MonoBehaviour {
         AbleToLook(false);
         AbleToHover(false);
         AbleToShoot(false);
+        AbleToPause(false);
     }
+    #endregion
 
     #region Accessor functions
     public void AbleToMove (bool _canMove) {
@@ -121,6 +138,10 @@ public class PlayerInput : MonoBehaviour {
 
     public void AbleToShoot (bool _canShoot) {
         canShoot = _canShoot;
+    }
+
+    public void AbleToPause (bool _canPause) {
+        canPause = _canPause;
     }
     #endregion
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
-    bool gameStarted = false;
+    bool gameStarted = false, gamePaused = false;
 
 	ObjectManager objectManager;
 	MenuManager menuManager;
@@ -15,6 +15,42 @@ public class GameManager : MonoBehaviour {
         PlayerInput playerInput = currentPlayer.GetComponent<PlayerInput>();
 
         playerInput.EnableAllInput();
+    }
+
+    public void PauseGame () {
+        if (gameStarted) {
+            gamePaused = true;
+            EnableMenuInput();
+
+            objectManager.FreezePhysicsObjects();
+
+            menuManager.ShowGamePauseUI();
+
+            Time.timeScale = 0;
+            Time.fixedDeltaTime = 0;
+        }
+    }
+
+    public void UnpauseGame() {
+        if (gameStarted) {
+            Time.timeScale = 1;
+            Time.fixedDeltaTime = 0.02f;
+
+            gamePaused = false;
+            DisableMenuInput();
+
+            objectManager.UnfreezePhysicsObjects();
+
+            menuManager.HideGameEndUI();
+        }
+    }
+
+    public void TogglePause () {
+        if (gamePaused) {
+            UnpauseGame();
+        } else {
+            PauseGame();
+        }
     }
 
     public bool GameWon () {
@@ -42,7 +78,10 @@ public class GameManager : MonoBehaviour {
 		GameObject currentPlayer = objectManager.GetCurrentPlayer();
 		
 		PlayerInput playerInput = currentPlayer.GetComponent<PlayerInput>();
-		playerInput.DisableAllInput();
+
+        playerInput.DisableAllInput();
+        if (gameStarted)
+            playerInput.AbleToPause(true);
 
 		currentPlayer.GetComponent<PlayerUI>().ShowPlayerUI(false);
 
@@ -50,8 +89,23 @@ public class GameManager : MonoBehaviour {
 		Cursor.visible = true;
 	}
 
-	// Use this for initialization
-	void Start () {
+    /// <summary>
+    /// Shows the player UI and locks the mouse cursor to the centre of the screen
+    /// </summary>
+    void DisableMenuInput() {
+        GameObject currentPlayer = objectManager.GetCurrentPlayer();
+
+        PlayerInput playerInput = currentPlayer.GetComponent<PlayerInput>();
+        playerInput.EnableAllInput();
+
+        currentPlayer.GetComponent<PlayerUI>().ShowPlayerUI(true);
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    // Use this for initialization
+    void Start () {
 		objectManager = GetComponent<ObjectManager>();
 		menuManager = GetComponent<MenuManager>();
 	}

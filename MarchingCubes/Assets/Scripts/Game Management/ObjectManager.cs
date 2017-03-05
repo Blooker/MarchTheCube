@@ -13,6 +13,9 @@ public class ObjectManager : MonoBehaviour {
 
     static GameObject spawnPoint;
 
+    static Vector3 playerLastVelocity;
+    static List<Vector3> enemiesLastVelocity = new List<Vector3>();
+
     public static void RemoveEnemy (GameObject enemy) {
         enemiesInLevel.Remove(enemy);
         Debug.Log(enemiesInLevel.Count);
@@ -88,6 +91,34 @@ public class ObjectManager : MonoBehaviour {
 				break;
 		}
 	}
+
+    public void FreezePhysicsObjects () {
+        Rigidbody playerRigid = currentPlayer.GetComponent<Rigidbody>();
+
+        playerLastVelocity = playerRigid.velocity;
+        playerRigid.constraints = RigidbodyConstraints.FreezeAll;
+
+        enemiesLastVelocity.Clear();
+
+        for (int i = 0; i < enemiesInLevel.Count; i++) {
+            Rigidbody enemyRigid = enemiesInLevel[i].GetComponent<Rigidbody>();
+            enemiesLastVelocity.Add(enemyRigid.velocity);
+            enemyRigid.constraints = RigidbodyConstraints.FreezePosition;
+        }
+    }
+
+    public void UnfreezePhysicsObjects () {
+        Rigidbody playerRigid = currentPlayer.GetComponent<Rigidbody>();
+
+        playerRigid.constraints = RigidbodyConstraints.FreezeRotation;
+        playerRigid.velocity = playerLastVelocity;
+
+        for (int i = 0; i < enemiesInLevel.Count; i++) {
+            Rigidbody enemyRigid = enemiesInLevel[i].GetComponent<Rigidbody>();
+            enemyRigid.constraints = RigidbodyConstraints.None;
+            enemyRigid.velocity = enemiesLastVelocity[i];
+        }
+    }
 
     public GameObject GetCurrentPlayer () {
         return currentPlayer;

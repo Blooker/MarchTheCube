@@ -5,9 +5,15 @@ using UnityEngine.UI;
 public class PlayerUI : MonoBehaviour {
 
     [SerializeField]
+    private DamageIndicator damageIndicator;
+
+    [SerializeField]
     float maxJetpackGuageSize;
 
 	GameObject playerCanvas;
+
+    Camera cam;
+
     Text countdownTimer, healthCounter, ammoCounter, enemyCounter;
     RectTransform jetpackGuage;
 
@@ -47,10 +53,18 @@ public class PlayerUI : MonoBehaviour {
         jetpackGuage.sizeDelta = new Vector2(guageSize, jetpackGuage.sizeDelta.y);
     }
 
+    public void CreateDamageIndicator (float damage, Vector3 hitPoint) {
+        string damageString = "-" + damage.ToString();
+        DamageIndicator newIndicator = Instantiate(damageIndicator.gameObject, Vector3.zero, Quaternion.identity, playerCanvas.transform).GetComponent<DamageIndicator>();
+
+        newIndicator.SetText(damageString);
+        newIndicator.SetHitPoint(hitPoint);
+    }
+
 	// Use this for initialization
 	void Start () {
-	    
-	}
+        cam = GetComponent<PlayerController>().GetPlayerCam();
+    }
 	
 	// Update is called once per frame
 	void Update () {

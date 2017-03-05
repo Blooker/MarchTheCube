@@ -64,7 +64,7 @@ public class CellAutoGenerator : MonoBehaviour {
     void RemoveCellsInColl() {
         capColl.gameObject.SetActive(true);
 
-        for (int x = 0; x < width; x++) {
+        /*for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < depth; z++) {
                     if (capColl.bounds.Contains(new Vector3(x, y, z))) {
@@ -72,7 +72,7 @@ public class CellAutoGenerator : MonoBehaviour {
                     }
                 }
             }
-        }
+        }*/
 
         capColl.gameObject.SetActive(false);
     }
