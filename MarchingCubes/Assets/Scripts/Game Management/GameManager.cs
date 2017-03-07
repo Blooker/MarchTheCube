@@ -3,6 +3,9 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
+    [SerializeField]
+    MapGenerator mapGenerator;
+
     bool gameStarted = false, gamePaused = false;
 
 	ObjectManager objectManager;
@@ -45,7 +48,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void TogglePause () {
+    public void TogglePause() {
         if (gamePaused) {
             UnpauseGame();
         } else {
@@ -53,23 +56,43 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public bool GameWon () {
+    public void LoseGame() {
+        gameStarted = false;
+
+        EnableMenuInput();
+        menuManager.ShowGameLostUI();
+    }
+
+    public void WinGame() {
+        gameStarted = false;
+
+        EnableMenuInput();
+        menuManager.ShowGameWonUI();
+    }
+
+    public void RestartGame () {
+        UnpauseGame();
+
+        string seed = mapGenerator.GetSeed();
+
+        ObjectManager.ClearAllLevelObjects();
+        objectManager.ClearCurrentPlayer();
+
+        ObjectPlacement objectPlacement = mapGenerator.GetComponent<ObjectPlacement>();
+        objectPlacement.PlaceRandomObjects(seed);
+
+        GameCountdown gameCountdown = GetComponent<GameCountdown>();
+        gameCountdown.ResetCountdown();
+
+        menuManager.HideGameEndUI();
+        DisableMenuInput();
+        
+    }
+
+    public bool WinConditionMet () {
         return ObjectManager.GetEnemiesInLevel().Count <= 0;
     }
 
-	public void LoseGame () {
-        gameStarted = false;
-
-        EnableMenuInput();
-		menuManager.ShowGameLostUI();
-	}
-
-	public void WinGame () {
-        gameStarted = false;
-
-        EnableMenuInput();
-		menuManager.ShowGameWonUI();
-	}
 
 	/// <summary>
 	/// Hides the player UI and unlocks the mouse cursor from the centre of the screen
@@ -112,7 +135,7 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (gameStarted && GameWon())
+        if (gameStarted && WinConditionMet())
             WinGame();
 	}
 }

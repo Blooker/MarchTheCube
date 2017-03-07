@@ -28,7 +28,7 @@ public class MenuManager : MonoBehaviour {
     }
 
     public void LoadGameSetup () {
-        ObjectManager.ClearObjects();
+        ObjectManager.ClearAllLevelObjects();
         SceneManager.LoadScene("GameSetup");
     }
 

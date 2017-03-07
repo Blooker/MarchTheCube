@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 public class ObjectManager : MonoBehaviour {
 	
-    GameObject currentPlayer;
     static List<GameObject> objectsInLevel = new List<GameObject>();
 
     static List<GameObject> ammoInLevel = new List<GameObject>();
     static List<GameObject> healthInLevel = new List<GameObject>();
+
     static List<GameObject> enemiesInLevel = new List<GameObject>();
 
     static GameObject spawnPoint;
@@ -16,21 +16,7 @@ public class ObjectManager : MonoBehaviour {
     static Vector3 playerLastVelocity;
     static List<Vector3> enemiesLastVelocity = new List<Vector3>();
 
-    public static void RemoveEnemy (GameObject enemy) {
-        enemiesInLevel.Remove(enemy);
-        Debug.Log(enemiesInLevel.Count);
-    }
-
-    public static void ClearObjects () {
-        for (int i = 0; i < objectsInLevel.Count; i++) {
-            Destroy(objectsInLevel[i]);
-        }
-		objectsInLevel.Clear();
-		ammoInLevel.Clear ();
-		healthInLevel.Clear ();
-		enemiesInLevel.Clear ();
-		spawnPoint = null;
-    }
+    private GameObject currentPlayer;
 
     public static bool CanPlaceObject (GameObject objectToPlace) {
         if (objectToPlace == null) {
@@ -92,6 +78,23 @@ public class ObjectManager : MonoBehaviour {
 		}
 	}
 
+    public static void ClearAllLevelObjects() {
+        for (int i = 0; i < objectsInLevel.Count; i++) {
+            Destroy(objectsInLevel[i]);
+        }
+
+        objectsInLevel.Clear();
+        ammoInLevel.Clear();
+        healthInLevel.Clear();
+        enemiesInLevel.Clear();
+        spawnPoint = null;
+    }
+
+    public void ClearCurrentPlayer () {
+        Destroy(currentPlayer);
+        currentPlayer = null;
+    }
+
     public void FreezePhysicsObjects () {
         Rigidbody playerRigid = currentPlayer.GetComponent<Rigidbody>();
 
@@ -120,14 +123,6 @@ public class ObjectManager : MonoBehaviour {
         }
     }
 
-    public GameObject GetCurrentPlayer () {
-        return currentPlayer;
-    }
-
-    public void SetCurrentPlayer(GameObject player) {
-        currentPlayer = player;
-    }
-
     public static List<GameObject> GetEnemiesInLevel () {
         return enemiesInLevel;
     }
@@ -143,7 +138,15 @@ public class ObjectManager : MonoBehaviour {
     public static GameObject GetSpawnPoint () {
         return spawnPoint;
     }
-	
+
+    public GameObject GetCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void SetCurrentPlayer(GameObject player) {
+        currentPlayer = player;
+    }
+
     // Use this for initialization
     void Start () {
 
