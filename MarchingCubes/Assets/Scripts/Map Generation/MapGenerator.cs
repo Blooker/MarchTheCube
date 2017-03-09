@@ -28,6 +28,11 @@ public class MapGenerator : MonoBehaviour {
         cellAutoGenerator = GetComponent<CellAutoGenerator>();
         marchCubesGenerator = GetComponent<MarchingCubes>();
         objectPlacement = GetComponent<ObjectPlacement>();
+
+        MapInfo mapInfo = GameObject.FindObjectOfType<MapInfo>();
+        SetSeed(mapInfo.seed);
+
+        GenerateMap();
 	}
 
     /// <summary>
@@ -35,8 +40,8 @@ public class MapGenerator : MonoBehaviour {
     /// </summary>
     public void GenerateMap () {
 		cellAutoGenerator.GenerateCellAuto ( mapSize, smoothingIterations, seed );
-        marchCubesGenerator.CreateCubeGrid( cellAutoGenerator.GetCellMap(), cubeSize );
 
+        marchCubesGenerator.CreateCubeGrid( cellAutoGenerator.GetCellMap(), cubeSize );
         marchCubesGenerator.GenerateMesh();
 		
         objectPlacement.LocateFloorTilesPos( marchCubesGenerator.GetCubeGrid(), cubeSize );

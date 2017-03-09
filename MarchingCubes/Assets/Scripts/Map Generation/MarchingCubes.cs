@@ -155,9 +155,7 @@ public class CubeGrid {
         for (int x = 0; x < nodeCountX; x++) {
             for (int y = 0; y < nodeCountY; y++) {
                 for (int z = 0; z < nodeCountZ; z++) {
-                    cubes[x, y, z] = new Cube(null, null, null, null, null, null, null, null,
-                                              null, null, null, null, null, null, null, null,
-                                              null, null, null, null);
+                    cubes[x, y, z] = new Cube();
                 }
             }
         }
@@ -384,6 +382,10 @@ public class Cube {
     public ControlNode[] controlNodes = new ControlNode[8];
     public Node[] edgeNodes = new Node[12];
     public int caseValue;
+
+    public Cube () {
+
+    }
 
     public Cube(ControlNode v0, ControlNode v1, ControlNode v2, ControlNode v3,
                     ControlNode v4, ControlNode v5, ControlNode v6, ControlNode v7,

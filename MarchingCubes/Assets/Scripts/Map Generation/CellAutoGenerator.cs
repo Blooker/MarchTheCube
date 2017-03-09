@@ -119,13 +119,15 @@ public class CellAutoGenerator : MonoBehaviour {
         List<List<Coord>> regions = new List<List<Coord>>();
 
         int[,,] mapFlags = new int[width, height, depth];
+        int[,,] tempFlags = new int[width, height, depth];
+        Queue<Coord> queue = new Queue<Coord>(width*height*depth);
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < depth; z++) {
 
                     if (mapFlags[x,y,z] == 0 && cellMap[x,y,z] == tileType) {
-                        List<Coord> newRegion = GetRegionTiles(x, y, z);
+                        List<Coord> newRegion = GetRegionTiles(x, y, z, tempFlags, queue);
                         regions.Add(newRegion);
 
                         foreach (Coord tile in newRegion) {
@@ -140,13 +142,13 @@ public class CellAutoGenerator : MonoBehaviour {
         return regions;
     }
 
-    List<Coord> GetRegionTiles (int startX, int startY, int startZ) {
+    List<Coord> GetRegionTiles (int startX, int startY, int startZ, int[,,] mapFlags, Queue<Coord> queue) {
         List<Coord> tiles = new List<Coord>();
 
-        int[,,] mapFlags = new int[width, height, depth];
+        //int[,,] mapFlags = new int[width, height, depth];
+
         int tileType = cellMap[startX, startY, startZ];
 
-        Queue<Coord> queue = new Queue<Coord>();
         queue.Enqueue(new Coord(startX, startY, startZ));
         mapFlags[startX, startY, startZ] = 1;
 
@@ -168,14 +170,17 @@ public class CellAutoGenerator : MonoBehaviour {
             }
         }
 
+        for (int i = 0; i < tiles.Count; i++) {
+            var coord = tiles[i];
+            mapFlags[coord.tileX, coord.tileY, coord.tileZ] = 0;
+        }
+
         return tiles;
     }
     
     bool IsInMapRange (int x, int y, int z) {
         return x >= 0 && x < width && y >= 0 && y < height && z >= 0 && z < depth;
     }
-
-
 
     struct Coord {
         public int tileX;
@@ -202,7 +207,7 @@ public class CellAutoGenerator : MonoBehaviour {
         }
 
         public int CompareTo (Room otherRoom) {
-            return otherRoom.roomSize.CompareTo(roomSize);
+            return otherRoom.roomSize - this.roomSize;
         }
     }
 
