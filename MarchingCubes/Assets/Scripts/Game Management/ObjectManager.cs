@@ -3,33 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ObjectManager : MonoBehaviour {
-	
-    GameObject currentPlayer;
+
     static List<GameObject> objectsInLevel = new List<GameObject>();
 
     static List<GameObject> ammoInLevel = new List<GameObject>();
     static List<GameObject> healthInLevel = new List<GameObject>();
+
     static List<GameObject> enemiesInLevel = new List<GameObject>();
 
     static GameObject spawnPoint;
 
-    public static void RemoveEnemy (GameObject enemy) {
-        enemiesInLevel.Remove(enemy);
-        Debug.Log(enemiesInLevel.Count);
-    }
+    static Vector3 playerLastVelocity;
+    static List<Vector3> enemiesLastVelocity = new List<Vector3>();
 
-    public static void ClearObjects () {
-        for (int i = 0; i < objectsInLevel.Count; i++) {
-            Destroy(objectsInLevel[i]);
-        }
-		objectsInLevel.Clear();
-		ammoInLevel.Clear ();
-		healthInLevel.Clear ();
-		enemiesInLevel.Clear ();
-		spawnPoint = null;
-    }
+    private GameObject currentPlayer;
 
-    public static bool CanPlaceObject (GameObject objectToPlace) {
+    public static bool CanPlaceObject(GameObject objectToPlace) {
         if (objectToPlace == null) {
             return true;
         }
@@ -45,7 +34,7 @@ public class ObjectManager : MonoBehaviour {
         return true;
     }
 
-    public static void AddToLevelObjects (GameObject levelObject) {
+    public static void AddToLevelObjects(GameObject levelObject) {
         objectsInLevel.Add(levelObject);
 
         switch (levelObject.tag) {
@@ -67,29 +56,90 @@ public class ObjectManager : MonoBehaviour {
         }
     }
 
-	public static void RemoveFromLevelObjects (GameObject levelObject) {
-		objectsInLevel.Remove (levelObject);
+    public static void RemoveFromLevelObjects(GameObject levelObject) {
+        objectsInLevel.Remove(levelObject);
 
-		switch (levelObject.tag) {
-			case "Ammo":
-				ammoInLevel.Remove(levelObject);
-				break;
-				
-			case "Health":
-				healthInLevel.Remove(levelObject);
-				break;
-				
-			case "Enemy":
-				enemiesInLevel.Remove(levelObject);
-				break;
-				
-			case "SpawnPoint":
-				spawnPoint = null;
-				break;
-		}
-	}
+        switch (levelObject.tag) {
+            case "Ammo":
+                ammoInLevel.Remove(levelObject);
+                break;
 
-    public GameObject GetCurrentPlayer () {
+            case "Health":
+                healthInLevel.Remove(levelObject);
+                break;
+
+            case "Enemy":
+                enemiesInLevel.Remove(levelObject);
+                break;
+
+            case "SpawnPoint":
+                spawnPoint = null;
+                break;
+        }
+    }
+
+    public static void ClearAllLevelObjects() {
+        for (int i = 0; i < objectsInLevel.Count; i++) {
+            Destroy(objectsInLevel[i]);
+        }
+
+        objectsInLevel.Clear();
+        ammoInLevel.Clear();
+        healthInLevel.Clear();
+        enemiesInLevel.Clear();
+        spawnPoint = null;
+    }
+
+    public void ClearCurrentPlayer() {
+        Destroy(currentPlayer);
+        currentPlayer = null;
+    }
+
+    public void FreezePhysicsObjects() {
+        Rigidbody playerRigid = currentPlayer.GetComponent<Rigidbody>();
+
+        playerLastVelocity = playerRigid.velocity;
+        playerRigid.constraints = RigidbodyConstraints.FreezeAll;
+
+        enemiesLastVelocity.Clear();
+
+        for (int i = 0; i < enemiesInLevel.Count; i++) {
+            Rigidbody enemyRigid = enemiesInLevel[i].GetComponent<Rigidbody>();
+            enemiesLastVelocity.Add(enemyRigid.velocity);
+            enemyRigid.constraints = RigidbodyConstraints.FreezePosition;
+        }
+    }
+
+    public void UnfreezePhysicsObjects() {
+        Rigidbody playerRigid = currentPlayer.GetComponent<Rigidbody>();
+
+        playerRigid.constraints = RigidbodyConstraints.FreezeRotation;
+        playerRigid.velocity = playerLastVelocity;
+
+        for (int i = 0; i < enemiesInLevel.Count; i++) {
+            Rigidbody enemyRigid = enemiesInLevel[i].GetComponent<Rigidbody>();
+            enemyRigid.constraints = RigidbodyConstraints.None;
+            enemyRigid.velocity = enemiesLastVelocity[i];
+        }
+    }
+
+    public static List<GameObject> GetEnemiesInLevel() {
+        return enemiesInLevel;
+    }
+
+    public static int GetAmmoCount() {
+        return ammoInLevel.Count;
+    }
+
+    public static int GetHealthCount() {
+        return healthInLevel.Count;
+    }
+
+    public static GameObject GetSpawnPoint() {
+        return spawnPoint;
+    }
+
+    public GameObject GetCurrentPlayer() {
         return currentPlayer;
     }
 
@@ -97,29 +147,13 @@ public class ObjectManager : MonoBehaviour {
         currentPlayer = player;
     }
 
-    public static List<GameObject> GetEnemiesInLevel () {
-        return enemiesInLevel;
-    }
-
-	public static int GetAmmoCount() {
-		return ammoInLevel.Count;
-	}
-
-	public static int GetHealthCount() {
-		return healthInLevel.Count;
-	}
-	
-    public static GameObject GetSpawnPoint () {
-        return spawnPoint;
-    }
-	
     // Use this for initialization
-    void Start () {
+    void Start() {
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+    }
 }

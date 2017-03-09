@@ -4,11 +4,9 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(CellAutoGenerator))]
 [RequireComponent(typeof(MarchingCubes))]
-[RequireComponent(typeof(ItemPlacement))]
+[RequireComponent(typeof(ObjectPlacement))]
 
 public class MapGenerator : MonoBehaviour {
-
-	// TEST SEED : 2.013698
 
     [SerializeField]
     Vector3 mapSize;
@@ -21,33 +19,28 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField]
     string seed;
 
-    CellAutoGenerator cellAuto;
-    MarchingCubes marchCubes;
-    ItemPlacement itemPlacement;
+    CellAutoGenerator cellAutoGenerator;
+    MarchingCubes marchCubesGenerator;
+    ObjectPlacement objectPlacement;
 
 	// Use this for initialization
 	void Start () {
-        cellAuto = GetComponent<CellAutoGenerator>();
-        marchCubes = GetComponent<MarchingCubes>();
-        itemPlacement = GetComponent<ItemPlacement>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+        cellAutoGenerator = GetComponent<CellAutoGenerator>();
+        marchCubesGenerator = GetComponent<MarchingCubes>();
+        objectPlacement = GetComponent<ObjectPlacement>();
 	}
 
     /// <summary>
     /// Generates an in-game map.
     /// </summary>
     public void GenerateMap () {
-		cellAuto.GenerateCellAuto ( mapSize, smoothingIterations, seed );
-        marchCubes.CreateCubeGrid( cellAuto.GetCellMap(), cubeSize );
+		cellAutoGenerator.GenerateCellAuto ( mapSize, smoothingIterations, seed );
+        marchCubesGenerator.CreateCubeGrid( cellAutoGenerator.GetCellMap(), cubeSize );
 
-        marchCubes.GenerateMesh();
+        marchCubesGenerator.GenerateMesh();
 		
-        itemPlacement.LocateFloorTilesPos( marchCubes.GetCubeGrid(), cubeSize );
-		itemPlacement.PlaceRandomItems ( seed );
+        objectPlacement.LocateFloorTilesPos( marchCubesGenerator.GetCubeGrid(), cubeSize );
+		objectPlacement.PlaceRandomObjects ( seed );
     }
 
     #region Seed methods
@@ -67,17 +60,6 @@ public class MapGenerator : MonoBehaviour {
     public string GetSeed () {
         return seed;
     }
-    #endregion
-
-    #region Cube grid methods
-
-    /*/// <summary>
-    /// Gets the map's current cube grid.
-    /// </summary>
-    /// <returns>Instance of CubeGrid class</returns>
-    public CubeGrid GetCubeGrid () {
-        return cubeGrid;
-    }*/
     #endregion
 
     #region Map size methods

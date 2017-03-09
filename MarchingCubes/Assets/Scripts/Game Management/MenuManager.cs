@@ -28,7 +28,7 @@ public class MenuManager : MonoBehaviour {
     }
 
     public void LoadGameSetup () {
-        ObjectManager.ClearObjects();
+        ObjectManager.ClearAllLevelObjects();
         SceneManager.LoadScene("GameSetup");
     }
 
@@ -72,6 +72,16 @@ public class MenuManager : MonoBehaviour {
             seedText.text = mapGenerator.GetSeed();
         }
 	}
+
+    public void ShowGamePauseUI () {
+        gameOverUI.gameObject.SetActive(true);
+
+        Text resultText = gameOverUI.transform.FindChild("ResultPanel").FindChild("ResultText").gameObject.GetComponent<Text>();
+        resultText.text = "Game paused\n(Esc to unpause)";
+
+        Text seedText = gameOverUI.transform.FindChild("SeedPanel").FindChild("SeedText").gameObject.GetComponent<Text>();
+        seedText.text = mapGenerator.GetSeed();
+    }
 
 	public void HideGameEndUI () {
         if (gameOverUI != null)

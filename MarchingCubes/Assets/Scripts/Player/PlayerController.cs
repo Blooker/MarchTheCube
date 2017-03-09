@@ -82,13 +82,5 @@ public class PlayerController : MonoBehaviour {
             ObjectManager.RemoveFromLevelObjects(coll.gameObject);
             Destroy(coll.gameObject);
         }
-
-		/*Debug.Log ("Ammo: " + 
-		           "Items in level = " + ObjectManager.GetAmmoCount().ToString() + ", " +
-		           "Player amount = " + playerStats.GetAmmoCount().ToString() + "\n" +
-
-		           "Health: " + 
-		           "Items in level = " + ObjectManager.GetHealthCount().ToString() + ", " +
-		           "Player amount = " + playerStats.GetHealthCount().ToString());*/
 	}
 }

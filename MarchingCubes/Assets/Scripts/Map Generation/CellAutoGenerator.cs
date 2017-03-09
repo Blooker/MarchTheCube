@@ -7,25 +7,25 @@ public class CellAutoGenerator : MonoBehaviour {
 
     //MapGenerator mapGenerator;
 
+    //public CapsuleCollider capColl;
+
+    [SerializeField]
+    [Range(0, 100)]
+    int randomFillPercent;
+
     int width;
     int height;
     int depth;
 
-    public CapsuleCollider capColl;
+    int[,,] cellMap;
 
-    [Range(0, 100)]
-    public int randomFillPercent;
-
-    public int[,,] cellMap;
-
-    void Start () {
-        //mapGenerator = GetComponent<MapGenerator>();
-    }
-
+    /// <summary>
+    /// Generates a smoothed cellular automaton
+    /// </summary>
+    /// <param name="size">Width, height and depth of the automaton</param>
+    /// <param name="smoothingIterations">The number of smoothing passes made</param>
+    /// <param name="seed">The string level seed</param>
     public void GenerateCellAuto(Vector3 size, int smoothingIterations, string seed) {
-        //Vector3 mapSize = mapGenerator.GetMapSize();
-        //int smoothingIterations = mapGenerator.GetSmoothingIterations();
-        //string seed = mapGenerator.GetSeed();
 
         width = (int)size.x;
         height = (int)size.y;
@@ -33,15 +33,13 @@ public class CellAutoGenerator : MonoBehaviour {
 
         cellMap = new int[width, height, depth];
         RandomFillMap(seed);
-        RemoveCellsInColl();
+        //RemoveCellsInColl();
 
         for (int i = 0; i < smoothingIterations; i++) {
             SmoothMap();
         }
 
         ProcessMap();
-
-        SetCellMap(cellMap);
     }
 
     void RandomFillMap(string seed) {
@@ -59,22 +57,6 @@ public class CellAutoGenerator : MonoBehaviour {
                 }
             }
         }
-    }
-
-    void RemoveCellsInColl() {
-        capColl.gameObject.SetActive(true);
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                for (int z = 0; z < depth; z++) {
-                    if (capColl.bounds.Contains(new Vector3(x, y, z))) {
-                        cellMap[x, y, z] = 0;
-                    }
-                }
-            }
-        }
-
-        capColl.gameObject.SetActive(false);
     }
 
     void SmoothMap() {
@@ -117,24 +99,16 @@ public class CellAutoGenerator : MonoBehaviour {
     }
 
     void ProcessMap () {
-        List<List<Coord>> roomRegions = GetRegions(0);
+        List<List<Coord>> mapRegions = GetRegions(0);
+        List<Room> mapRooms = new List<Room>();
 
-        int roomThresholdSize = 1000;
-        List<Room> survivingRooms = new List<Room>();
-
-        foreach (List<Coord> roomRegion in roomRegions) {
-            if (roomRegion.Count < roomThresholdSize) {
-                foreach (Coord tile in roomRegion) {
-                    cellMap[tile.tileX, tile.tileY, tile.tileZ] = 1;
-                }
-            } else {
-                survivingRooms.Add(new Room(roomRegion, cellMap));
-            }
+        foreach (List<Coord> mapRegion in mapRegions) {
+            mapRooms.Add(new Room(mapRegion, cellMap));
         }
 
-        survivingRooms.Sort();
-        for (int i = 1; i < survivingRooms.Count; i++) {
-            foreach(Coord tile in survivingRooms[i].tiles) {
+        mapRooms.Sort();
+        for (int i = 1; i < mapRooms.Count; i++) {
+            foreach(Coord tile in mapRooms[i].tiles) {
                 cellMap[tile.tileX, tile.tileY, tile.tileZ] = 1;
             }
         }
@@ -201,6 +175,8 @@ public class CellAutoGenerator : MonoBehaviour {
         return x >= 0 && x < width && y >= 0 && y < height && z >= 0 && z < depth;
     }
 
+
+
     struct Coord {
         public int tileX;
         public int tileY;
@@ -237,4 +213,20 @@ public class CellAutoGenerator : MonoBehaviour {
 	public int[,,] GetCellMap () {
 		return cellMap;
 	}
+
+    /*void RemoveCellsInColl() {
+        //capColl.gameObject.SetActive(true);
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int z = 0; z < depth; z++) {
+                    if (capColl.bounds.Contains(new Vector3(x, y, z))) {
+                        cellMap[x, y, z] = 0;
+                    }
+                }
+            }
+        }
+
+        //capColl.gameObject.SetActive(false);
+    }*/
 }

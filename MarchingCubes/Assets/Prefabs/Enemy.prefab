@@ -5,14 +5,14 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 479856}
-  - 33: {fileID: 3378988}
-  - 135: {fileID: 13549902}
-  - 23: {fileID: 2397138}
-  - 114: {fileID: 11406354}
-  - 54: {fileID: 5491334}
+  - component: {fileID: 479856}
+  - component: {fileID: 3378988}
+  - component: {fileID: 13549902}
+  - component: {fileID: 2397138}
+  - component: {fileID: 11406354}
+  - component: {fileID: 5491334}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -32,6 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2397138
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -41,17 +42,22 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 9e89392f37a4f734ebc8b856258eea5c, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -93,8 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 15
   moveSpeed: 8
-  attackDamage: 3
-  attackInterval: 1
+  attackDamage: 1
+  attackInterval: 0.25
   followDistance: 20
   hearingDistance: 30
 --- !u!135 &13549902

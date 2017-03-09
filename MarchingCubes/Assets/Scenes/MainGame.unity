@@ -167,6 +167,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1118583930}
+        m_MethodName: UnpauseGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1118583929}
         m_MethodName: LoadGameSetup
         m_Mode: 1
@@ -948,6 +959,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1118583930}
+        m_MethodName: UnpauseGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1118583929}
         m_MethodName: QuitGame
         m_Mode: 1
@@ -1087,6 +1109,7 @@ GameObject:
   - component: {fileID: 482917550}
   - component: {fileID: 482917552}
   - component: {fileID: 482917551}
+  - component: {fileID: 482917553}
   m_Layer: 5
   m_Name: Crosshair
   m_TagString: Untagged
@@ -1148,6 +1171,20 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 482917549}
+--- !u!114 &482917553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 482917549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1001 &490943710
 Prefab:
   m_ObjectHideFlags: 0
@@ -1636,10 +1673,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1118583926}
+  - component: {fileID: 1118583930}
   - component: {fileID: 1118583929}
   - component: {fileID: 1118583928}
   - component: {fileID: 1118583927}
-  - component: {fileID: 1118583930}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1714,6 +1751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b294807c35f824fb2e011c666d282d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 1400200431}
 --- !u!1 &1196240564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1972,7 +2010,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 132984, guid: e6dbbe29361af2a4fba51993b1afc759, type: 2}
   playerCanvas: {fileID: 140401378}
-  items:
+  objects:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 121234, guid: 20b6a5cc2a0530942b467aa6c737101e, type: 2}
@@ -1980,7 +2018,7 @@ MonoBehaviour:
   - {fileID: 180958, guid: be246fbda956c314c9a0d262edf07f67, type: 2}
   - {fileID: 156764, guid: 288f62ff0bfd81245a9cb595b888eb0f, type: 2}
   objectManager: {fileID: 1118583927}
-  itemPlacementChances: 040000000300000005000000060000000300000001000000
+  objectPlacementChances: 280000001e000000320000005a0000001e00000005000000
 --- !u!114 &1400200431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1995,7 +2033,7 @@ MonoBehaviour:
   mapSize: {x: 200, y: 50, z: 200}
   smoothingIterations: 30
   cubeSize: 1
-  seed: ooga booga
+  seed: mjk11dnn935g
 --- !u!1 &1442485903
 GameObject:
   m_ObjectHideFlags: 0
@@ -2296,7 +2334,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1813174303}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1118583930}
+        m_MethodName: RestartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1813174303

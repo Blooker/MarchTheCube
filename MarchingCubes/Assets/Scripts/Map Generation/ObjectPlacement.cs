@@ -4,48 +4,46 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-public class ItemPlacement : MonoBehaviour {
+public class ObjectPlacement : MonoBehaviour {
 
 	[SerializeField]
 	GameObject player, playerCanvas;
 
     [SerializeField]
-	GameObject[] items;
+	GameObject[] objects;
 	
     [SerializeField]
     ObjectManager objectManager;
 
     [SerializeField]
-    int[] itemPlacementChances;
+    int[] objectPlacementChances;
 
     bool playerSpawned = false;
 
 	List<Vector3> floorTilesPos = new List<Vector3>();
     GameObject spawnPoint;
 
-    public void PlaceRandomItems (string seed) {
+    public void PlaceRandomObjects (string seed) {
         System.Random pseudoRandom = new System.Random (seed.GetHashCode());
 
 		for (int i = 0; i < floorTilesPos.Count; i++) {
-            GameObject itemToPlace = null;
+            GameObject objectToPlace = null;
             
             do {
-                itemToPlace = ItemFromPercentage(pseudoRandom.Next(0, 400));
-            } while ( !ObjectManager.CanPlaceObject ( itemToPlace ) );
+                objectToPlace = ObjectFromPercentage(pseudoRandom.Next(0, 4000));
+            } while ( !ObjectManager.CanPlaceObject ( objectToPlace ) );
 
 
-			if (itemToPlace != null) {
-				Vector3 itemPos = new Vector3 (floorTilesPos[i].x, floorTilesPos[i].y + 1f, floorTilesPos[i].z);
-				GameObject spawnedItem = Instantiate(itemToPlace, itemPos, Quaternion.identity) as GameObject;
+			if (objectToPlace != null) {
+				Vector3 objectPos = new Vector3 (floorTilesPos[i].x, floorTilesPos[i].y + 1f, floorTilesPos[i].z);
+				GameObject spawnedObject = Instantiate(objectToPlace, objectPos, Quaternion.identity) as GameObject;
 
-                ObjectManager.AddToLevelObjects(spawnedItem);
+                ObjectManager.AddToLevelObjects(spawnedObject);
 
-				if (spawnedItem.name == "SpawnPoint(Clone)" && spawnPoint == null)
-					spawnPoint = spawnedItem;
+				if (spawnedObject.name == "SpawnPoint(Clone)" && spawnPoint == null)
+					spawnPoint = spawnedObject;
 			}
 		}
-
-		//Debug.Log (spawnPoint);
 
         SpawnPlayer();
     }
@@ -54,6 +52,9 @@ public class ItemPlacement : MonoBehaviour {
         Vector3 playerPos = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y + 2f, spawnPoint.transform.position.z);
         GameObject newPlayer = Instantiate(player, playerPos, Quaternion.identity) as GameObject;
         objectManager.SetCurrentPlayer(newPlayer);
+
+        PlayerInput playerInput = newPlayer.GetComponent<PlayerInput>();
+        playerInput.gameManager = objectManager.GetComponent<GameManager>();
 
 		PlayerUI playerUI = newPlayer.GetComponent<PlayerUI>();
         playerUI.SetCanvas(playerCanvas);
@@ -69,29 +70,29 @@ public class ItemPlacement : MonoBehaviour {
         playerUI.SetEnemyCounter(enemiesInLevel.Count);
     }
 
-    GameObject ItemFromPercentage(int chance) {
-        GameObject itemToPlace = null;
+    GameObject ObjectFromPercentage(int chance) {
+        GameObject objectToPlace = null;
 
-        for (int i = 0; i < itemPlacementChances.Length; i++) {
+        for (int i = 0; i < objectPlacementChances.Length; i++) {
 
             if ( i == 0 ) {
-                if (chance >= 0 && chance < itemPlacementChances[i]) {
-                    itemToPlace = items[i];
+                if (chance >= 0 && chance < objectPlacementChances[i]) {
+                    objectToPlace = objects[i];
                     break;
                 }
-            } else if ( i == itemPlacementChances.Length ) {
-                itemToPlace = null;
+            } else if ( i == objectPlacementChances.Length ) {
+                objectToPlace = null;
                 break;
             } else {
-                if ( chance >= itemPlacementChances.Take(i).Sum() && chance < itemPlacementChances.Take(i+1).Sum() ) {
-                    itemToPlace = items[i];
+                if ( chance >= objectPlacementChances.Take(i).Sum() && chance < objectPlacementChances.Take(i+1).Sum() ) {
+                    objectToPlace = objects[i];
                     break;
                 }
             }
 
         }
 
-        return itemToPlace;
+        return objectToPlace;
     }
 
     #region Floor tile positions methods
@@ -130,18 +131,6 @@ public class ItemPlacement : MonoBehaviour {
 		floorTilesPos = _floorTilesPos;
 	}
 	#endregion
-	
-	/*public List<GameObject> GetEnemies() {
-		return enemies;
-	}
-	
-	public List<GameObject> GetAmmoItems () {
-		return ammoItems;
-	}
-	
-	public List<GameObject> GetHealthItems () {
-		return healthItems;
-	}*/
 
 	// Use this for initialization
 	void Start () {

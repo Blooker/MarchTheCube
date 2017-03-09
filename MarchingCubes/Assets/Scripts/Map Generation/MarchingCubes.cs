@@ -94,12 +94,12 @@ public class MarchingCubes : MonoBehaviour {
         triangles.Add(c.vertexIndex);
     }
 
-	/// <summary>
-	/// Creates a new cube grid and sets it as the current grid.
-	/// </summary>
-	/// <param name="cellMap">The cellular automaton map.</param>
-	/// <param name="cubeSize">The size of each cube in the grid.</param>
-	public void CreateCubeGrid (int[,,] cellMap, float cubeSize) {
+    /// <summary>
+    /// Creates a new cube grid and sets it as the current grid.
+    /// </summary>
+    /// <param name="cellMap">The cellular automaton map.</param>
+    /// <param name="cubeSize">The size of each cube in the grid.</param>
+    public void CreateCubeGrid (int[,,] cellMap, float cubeSize) {
 		CubeGrid _cubeGrid = new CubeGrid (cellMap, cubeSize);
 		SetCubeGrid (_cubeGrid);
 	}
