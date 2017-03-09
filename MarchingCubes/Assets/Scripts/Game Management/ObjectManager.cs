@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ObjectManager : MonoBehaviour {
-	
+
     static List<GameObject> objectsInLevel = new List<GameObject>();
 
     static List<GameObject> ammoInLevel = new List<GameObject>();
@@ -18,7 +18,7 @@ public class ObjectManager : MonoBehaviour {
 
     private GameObject currentPlayer;
 
-    public static bool CanPlaceObject (GameObject objectToPlace) {
+    public static bool CanPlaceObject(GameObject objectToPlace) {
         if (objectToPlace == null) {
             return true;
         }
@@ -34,7 +34,7 @@ public class ObjectManager : MonoBehaviour {
         return true;
     }
 
-    public static void AddToLevelObjects (GameObject levelObject) {
+    public static void AddToLevelObjects(GameObject levelObject) {
         objectsInLevel.Add(levelObject);
 
         switch (levelObject.tag) {
@@ -56,27 +56,27 @@ public class ObjectManager : MonoBehaviour {
         }
     }
 
-	public static void RemoveFromLevelObjects (GameObject levelObject) {
-		objectsInLevel.Remove (levelObject);
+    public static void RemoveFromLevelObjects(GameObject levelObject) {
+        objectsInLevel.Remove(levelObject);
 
-		switch (levelObject.tag) {
-			case "Ammo":
-				ammoInLevel.Remove(levelObject);
-				break;
-				
-			case "Health":
-				healthInLevel.Remove(levelObject);
-				break;
-				
-			case "Enemy":
-				enemiesInLevel.Remove(levelObject);
-				break;
-				
-			case "SpawnPoint":
-				spawnPoint = null;
-				break;
-		}
-	}
+        switch (levelObject.tag) {
+            case "Ammo":
+                ammoInLevel.Remove(levelObject);
+                break;
+
+            case "Health":
+                healthInLevel.Remove(levelObject);
+                break;
+
+            case "Enemy":
+                enemiesInLevel.Remove(levelObject);
+                break;
+
+            case "SpawnPoint":
+                spawnPoint = null;
+                break;
+        }
+    }
 
     public static void ClearAllLevelObjects() {
         for (int i = 0; i < objectsInLevel.Count; i++) {
@@ -90,12 +90,12 @@ public class ObjectManager : MonoBehaviour {
         spawnPoint = null;
     }
 
-    public void ClearCurrentPlayer () {
+    public void ClearCurrentPlayer() {
         Destroy(currentPlayer);
         currentPlayer = null;
     }
 
-    public void FreezePhysicsObjects () {
+    public void FreezePhysicsObjects() {
         Rigidbody playerRigid = currentPlayer.GetComponent<Rigidbody>();
 
         playerLastVelocity = playerRigid.velocity;
@@ -110,7 +110,7 @@ public class ObjectManager : MonoBehaviour {
         }
     }
 
-    public void UnfreezePhysicsObjects () {
+    public void UnfreezePhysicsObjects() {
         Rigidbody playerRigid = currentPlayer.GetComponent<Rigidbody>();
 
         playerRigid.constraints = RigidbodyConstraints.FreezeRotation;
@@ -123,19 +123,19 @@ public class ObjectManager : MonoBehaviour {
         }
     }
 
-    public static List<GameObject> GetEnemiesInLevel () {
+    public static List<GameObject> GetEnemiesInLevel() {
         return enemiesInLevel;
     }
 
-	public static int GetAmmoCount() {
-		return ammoInLevel.Count;
-	}
+    public static int GetAmmoCount() {
+        return ammoInLevel.Count;
+    }
 
-	public static int GetHealthCount() {
-		return healthInLevel.Count;
-	}
-	
-    public static GameObject GetSpawnPoint () {
+    public static int GetHealthCount() {
+        return healthInLevel.Count;
+    }
+
+    public static GameObject GetSpawnPoint() {
         return spawnPoint;
     }
 
@@ -148,12 +148,12 @@ public class ObjectManager : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start() {
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+    }
 }

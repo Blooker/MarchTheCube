@@ -8,8 +8,6 @@ using System.Collections.Generic;
 
 public class MapGenerator : MonoBehaviour {
 
-	// TEST SEED : 2.013698
-
     [SerializeField]
     Vector3 mapSize;
     [SerializeField]
@@ -21,32 +19,27 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField]
     string seed;
 
-    CellAutoGenerator cellAuto;
-    MarchingCubes marchCubes;
+    CellAutoGenerator cellAutoGenerator;
+    MarchingCubes marchCubesGenerator;
     ObjectPlacement objectPlacement;
 
 	// Use this for initialization
 	void Start () {
-        cellAuto = GetComponent<CellAutoGenerator>();
-        marchCubes = GetComponent<MarchingCubes>();
+        cellAutoGenerator = GetComponent<CellAutoGenerator>();
+        marchCubesGenerator = GetComponent<MarchingCubes>();
         objectPlacement = GetComponent<ObjectPlacement>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 
     /// <summary>
     /// Generates an in-game map.
     /// </summary>
     public void GenerateMap () {
-		cellAuto.GenerateCellAuto ( mapSize, smoothingIterations, seed );
-        marchCubes.CreateCubeGrid( cellAuto.GetCellMap(), cubeSize );
+		cellAutoGenerator.GenerateCellAuto ( mapSize, smoothingIterations, seed );
+        marchCubesGenerator.CreateCubeGrid( cellAutoGenerator.GetCellMap(), cubeSize );
 
-        marchCubes.GenerateMesh();
+        marchCubesGenerator.GenerateMesh();
 		
-        objectPlacement.LocateFloorTilesPos( marchCubes.GetCubeGrid(), cubeSize );
+        objectPlacement.LocateFloorTilesPos( marchCubesGenerator.GetCubeGrid(), cubeSize );
 		objectPlacement.PlaceRandomObjects ( seed );
     }
 
@@ -67,17 +60,6 @@ public class MapGenerator : MonoBehaviour {
     public string GetSeed () {
         return seed;
     }
-    #endregion
-
-    #region Cube grid methods
-
-    /*/// <summary>
-    /// Gets the map's current cube grid.
-    /// </summary>
-    /// <returns>Instance of CubeGrid class</returns>
-    public CubeGrid GetCubeGrid () {
-        return cubeGrid;
-    }*/
     #endregion
 
     #region Map size methods
