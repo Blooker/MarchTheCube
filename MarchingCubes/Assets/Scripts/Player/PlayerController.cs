@@ -18,9 +18,13 @@ public class PlayerController : MonoBehaviour {
     private PlayerMotor motor;
 	private PlayerStats playerStats;
 
+    void Awake () {
+        motor = GetComponent<PlayerMotor>();
+        playerStats = GetComponent<PlayerStats>();
+    }
+
 	void Start () {
-		motor = GetComponent<PlayerMotor> ();
-		playerStats = GetComponent<PlayerStats> ();
+		
 	}
 
     public void ApplyMovement (float xMov, float zMov) {

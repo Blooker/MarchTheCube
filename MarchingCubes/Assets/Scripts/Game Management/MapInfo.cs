@@ -11,12 +11,6 @@ public class MapInfo : MonoBehaviour {
     }
 
     void Update () {
-        if (SceneManager.GetActiveScene().name == "MainGame") {
-            MapGenerator mapGenerator = GameObject.Find("MapGenerator").GetComponent<MapGenerator>();
-
-            mapGenerator.SetSeed(seed);
-            mapGenerator.GenerateMap();
-            Destroy(this.gameObject);
-        }
+        
     }
 }

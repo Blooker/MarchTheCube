@@ -27,19 +27,29 @@ public class CellAutoGenerator : MonoBehaviour {
     /// <param name="seed">The string level seed</param>
     public void GenerateCellAuto(Vector3 size, int smoothingIterations, string seed) {
 
+        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
+
         width = (int)size.x;
         height = (int)size.y;
         depth = (int)size.z;
 
         cellMap = new int[width, height, depth];
         RandomFillMap(seed);
+        Debug.Log(stopwatch.Elapsed.TotalSeconds);
         //RemoveCellsInColl();
 
+        int[,,] tempCellMap = new int[width, height, depth];
+
         for (int i = 0; i < smoothingIterations; i++) {
-            SmoothMap();
+            SmoothMap(cellMap, tempCellMap);
         }
+        Debug.Log(stopwatch.Elapsed.TotalSeconds);
 
         ProcessMap();
+        Debug.Log(stopwatch.Elapsed.TotalSeconds);
+
+        stopwatch.Stop();
     }
 
     void RandomFillMap(string seed) {
@@ -59,7 +69,7 @@ public class CellAutoGenerator : MonoBehaviour {
         }
     }
 
-    void SmoothMap() {
+    void SmoothMap(int[,,] cellMapIn, int[,,] cellMapOut) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < depth; z++) {
@@ -67,20 +77,22 @@ public class CellAutoGenerator : MonoBehaviour {
                       //  map[x, y, z] = 0;
                     //}
 
-                    int neighbourWallTiles = GetSurroundingWallCount(x, y, z);
+                    int neighbourWallTiles = GetSurroundingWallCount(cellMapIn, x, y, z);
                     if (neighbourWallTiles >= 15) {
-                        cellMap[x, y, z] = 1;
+                        cellMapOut[x, y, z] = 1;
                     } else if (neighbourWallTiles < 13) {
-                        cellMap[x, y, z] = 0;
+                        cellMapOut[x, y, z] = 0;
                     }
                 }
             }
         }
+
+        cellMap = cellMapOut;
     }
 
-    int GetSurroundingWallCount(int gridX, int gridY, int gridZ) {
+    int GetSurroundingWallCount(int[,,] cellMapIn, int gridX, int gridY, int gridZ) {
         int wallCount = 0;
-        for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX++) {
+        /*for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX++) {
             for (int neighbourY = gridY - 1; neighbourY <= gridY + 1; neighbourY++) {
                 for (int neighbourZ = gridZ - 1; neighbourZ <= gridZ + 1; neighbourZ++) {
 
@@ -93,9 +105,52 @@ public class CellAutoGenerator : MonoBehaviour {
                     }
                 }
             }
-        }
+        }*/
+
+        IncrementIfValid(ref wallCount, cellMapIn, gridX-1, gridY-1, gridZ);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX-1, gridY-1, gridZ+1);
+ 
+        IncrementIfValid(ref wallCount, cellMapIn, gridX-1, gridY, gridZ-1);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX-1, gridY, gridZ);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX-1, gridY, gridZ+1);
+
+        IncrementIfValid(ref wallCount, cellMapIn, gridX-1, gridY+1, gridZ-1);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX-1, gridY+1, gridZ);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX-1, gridY+1, gridZ+1);
+
+        IncrementIfValid(ref wallCount, cellMapIn, gridX, gridY-1, gridZ-1);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX, gridY-1, gridZ);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX, gridY-1, gridZ+1);
+
+        IncrementIfValid(ref wallCount, cellMapIn, gridX, gridY, gridZ-1);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX, gridY, gridZ);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX, gridY, gridZ+1);
+
+        IncrementIfValid(ref wallCount, cellMapIn, gridX, gridY+1, gridZ-1);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX, gridY+1, gridZ);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX, gridY+1, gridZ+1);
+
+        IncrementIfValid(ref wallCount, cellMapIn, gridX+1, gridY-1, gridZ-1);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX+1, gridY-1, gridZ);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX+1, gridY-1, gridZ+1);
+
+        IncrementIfValid(ref wallCount, cellMapIn, gridX+1, gridY, gridZ-1);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX+1, gridY, gridZ);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX+1, gridY, gridZ+1);
+
+        IncrementIfValid(ref wallCount, cellMapIn, gridX+1, gridY+1, gridZ-1);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX+1, gridY+1, gridZ);
+        IncrementIfValid(ref wallCount, cellMapIn, gridX+1, gridY+1, gridZ+1);
 
         return wallCount;
+    }
+
+    void IncrementIfValid (ref int wallCount, int[,,] cellMapIn, int nX, int nY, int nZ) {
+        if (IsInMapRange(nX, nY, nZ)) {
+            wallCount += cellMapIn[nX, nY, nZ];
+        } else {
+            wallCount++;
+        }
     }
 
     void ProcessMap () {
@@ -120,7 +175,7 @@ public class CellAutoGenerator : MonoBehaviour {
 
         int[,,] mapFlags = new int[width, height, depth];
         int[,,] tempFlags = new int[width, height, depth];
-        Queue<Coord> queue = new Queue<Coord>(width*height*depth);
+        Queue<Coord> queue = new Queue<Coord>();
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -207,7 +262,7 @@ public class CellAutoGenerator : MonoBehaviour {
         }
 
         public int CompareTo (Room otherRoom) {
-            return otherRoom.roomSize - this.roomSize;
+            return otherRoom.roomSize.CompareTo(roomSize);
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 [RequireComponent(typeof(CellAutoGenerator))]
 [RequireComponent(typeof(MarchingCubes))]
@@ -39,13 +40,23 @@ public class MapGenerator : MonoBehaviour {
     /// Generates an in-game map.
     /// </summary>
     public void GenerateMap () {
+        //Stopwatch stopwatch = new Stopwatch();
+        //stopwatch.Start();
+
 		cellAutoGenerator.GenerateCellAuto ( mapSize, smoothingIterations, seed );
+        //UnityEngine.Debug.Log(stopwatch.Elapsed.TotalMilliseconds);
 
         marchCubesGenerator.CreateCubeGrid( cellAutoGenerator.GetCellMap(), cubeSize );
+       // UnityEngine.Debug.Log(stopwatch.Elapsed.TotalMilliseconds);
         marchCubesGenerator.GenerateMesh();
-		
+        //UnityEngine.Debug.Log(stopwatch.Elapsed.TotalMilliseconds);
+
         objectPlacement.LocateFloorTilesPos( marchCubesGenerator.GetCubeGrid(), cubeSize );
-		objectPlacement.PlaceRandomObjects ( seed );
+        //UnityEngine.Debug.Log(stopwatch.Elapsed.TotalMilliseconds);
+        objectPlacement.PlaceRandomObjects ( seed );
+        //UnityEngine.Debug.Log(stopwatch.Elapsed.TotalMilliseconds);
+
+       // stopwatch.Stop();
     }
 
     #region Seed methods
