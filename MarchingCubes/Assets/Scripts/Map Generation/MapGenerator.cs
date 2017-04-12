@@ -33,6 +33,8 @@ public class MapGenerator : MonoBehaviour {
         MapInfo mapInfo = GameObject.FindObjectOfType<MapInfo>();
         SetSeed(mapInfo.seed);
 
+        Destroy(mapInfo.gameObject);
+
         GenerateMap();
 	}
 
