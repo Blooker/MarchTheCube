@@ -63,6 +63,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &3378988
 MeshFilter:
@@ -102,7 +103,7 @@ MonoBehaviour:
   attackDamage: 1
   attackInterval: 0.25
   followDistance: 20
-  hearingDistance: 30
+  hearingDistance: 25
 --- !u!135 &13549902
 SphereCollider:
   m_ObjectHideFlags: 1

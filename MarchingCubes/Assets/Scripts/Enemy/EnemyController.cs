@@ -131,5 +131,8 @@ public class EnemyController : MonoBehaviour {
 				MoveTowardsPlayer(player.transform);
 			}
 		}
+
+        if (transform.position.y <= -10)
+            KillEnemy();
 	}
 }
