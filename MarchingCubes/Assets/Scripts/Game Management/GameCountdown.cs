@@ -1,28 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Class for handling the initial game countdown
+/// </summary>
+
 public class GameCountdown : MonoBehaviour {
 
-    PlayerUI playerUI;
+    // Defining variables
+    // Square bracket tags change how Unity displays attributes in the inspector
 
     [SerializeField]
-    int timeToCountdown;
-    float countdownTimer;
-    int nextCounterChange;
+    private int timeToCountdown;
 
-    static bool timerComplete = false;
-    bool timerDepleting;
+    private static bool timerComplete = false;
 
-    GameManager gameManager;
+    private float countdownTimer;
+    private int nextCounterChange;
 
-	// Use this for initialization
-	void Start () {
+    private bool timerDepleting;
+
+    private PlayerUI playerUI;
+    private GameManager gameManager;
+
+    /* ------------------
+     * BUILT-IN FUNCTIONS
+     * ------------------ */
+
+    // Use this for initialization
+    void Start () {
         ResetCountdown();
         gameManager = GetComponent<GameManager>();
     }
 
     // Update is called once per frame
-    void Update() {            
+    void Update() {
+
+        // If the player character has been created in the game world, get player UI and start initial countdown
         if (GetComponent<ObjectManager>().GetCurrentPlayer() != null) {
             playerUI = GetComponent<ObjectManager>().GetCurrentPlayer().GetComponent<PlayerUI>();
             StartCountdown();
@@ -40,25 +54,34 @@ public class GameCountdown : MonoBehaviour {
             gameManager.StartGame();
 
         } else if (playerUI != null) {
-            playerUI.SetCountdownTimer((Mathf.CeilToInt(countdownTimer)).ToString());
+            playerUI.SetCountdownTimer( (Mathf.CeilToInt(countdownTimer)).ToString() );
         }
 	}
 
+
+    /* ----------------
+     * CUSTOM FUNCTIONS
+     * ---------------- */
+
+    // Starts the initial game countdown
     public void StartCountdown () {
         timerDepleting = true;
     }
 
+    // Stops the initial game countdown
     public void StopCountdown () {
         timerDepleting = false;
         playerUI.SetCountdownTimer("");
     }
 
+    // Resets the initial game countdown
     public void ResetCountdown() {
         timerComplete = false;
         countdownTimer = timeToCountdown;
         nextCounterChange = timeToCountdown - 1;
     }
 
+    // Returns whether the initial game countdown has completed
     public static bool CountdownComplete () {
         return timerComplete;
     }

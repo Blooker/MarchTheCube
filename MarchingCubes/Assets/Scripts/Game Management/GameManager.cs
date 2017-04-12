@@ -1,17 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Class for managing game progression and controlling when the game starts, ends and pauses
+/// </summary>
+
 public class GameManager : MonoBehaviour {
 
+    // Defining variables
+    // Square bracket tags change how Unity displays attributes in the inspector
+
     [SerializeField]
-    MapGenerator mapGenerator;
+    private MapGenerator mapGenerator;
 
-    bool gameStarted = false, gamePaused = false;
+    private bool gameStarted = false, gamePaused = false;
 
-	ObjectManager objectManager;
-	MenuManager menuManager;
+	private ObjectManager objectManager;
+	private MenuManager menuManager;
 
-	public void StartGame () {
+
+    /* ------------------
+     * BUILT-IN FUNCTIONS
+     * ------------------ */
+
+    // Use this for initialization
+    void Start() {
+        objectManager = GetComponent<ObjectManager>();
+        menuManager = GetComponent<MenuManager>();
+    }
+
+    // Update is called once per frame
+    void Update() {
+        if (gameStarted && WinConditionMet())
+            WinGame();
+    }
+
+
+    /* ----------------
+     * CUSTOM FUNCTIONS
+     * ---------------- */
+
+    // Starts the game, allowing the player to move and shoot
+    public void StartGame () {
         gameStarted = true;
 
         GameObject currentPlayer = objectManager.GetCurrentPlayer();
@@ -20,6 +50,7 @@ public class GameManager : MonoBehaviour {
         playerInput.EnableAllInput();
     }
 
+    // Temporarily pauses the game and opens the pause menu
     public void PauseGame () {
         if (gameStarted) {
             gamePaused = true;
@@ -34,6 +65,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    // Unpauses the game and hides the pause menu
     public void UnpauseGame() {
         if (gameStarted) {
             Time.timeScale = 1;
@@ -48,6 +80,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    // Toggles between paused and unpaused states
     public void TogglePause() {
         if (gamePaused) {
             UnpauseGame();
@@ -56,6 +89,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    // Ends the game and shows the lose menu
     public void LoseGame() {
         gameStarted = false;
 
@@ -63,6 +97,7 @@ public class GameManager : MonoBehaviour {
         menuManager.ShowGameLostUI();
     }
 
+    // Ends the game and shows the win menu
     public void WinGame() {
         gameStarted = false;
 
@@ -70,6 +105,7 @@ public class GameManager : MonoBehaviour {
         menuManager.ShowGameWonUI();
     }
 
+    // Respawns the player, enemies and items and restarts the initial countdown timer
     public void RestartGame () {
         UnpauseGame();
 
@@ -89,14 +125,12 @@ public class GameManager : MonoBehaviour {
         
     }
 
+    // Returns whether the game's win condition has been met
     public bool WinConditionMet () {
         return ObjectManager.GetEnemiesInLevel().Count <= 0;
     }
 
-
-	/// <summary>
-	/// Hides the player UI and unlocks the mouse cursor from the centre of the screen
-	/// </summary>
+	// Hides the in-game player UI and unlocks the mouse cursor from the centre of the screen
 	void EnableMenuInput () {
 		GameObject currentPlayer = objectManager.GetCurrentPlayer();
 		
@@ -112,9 +146,7 @@ public class GameManager : MonoBehaviour {
 		Cursor.visible = true;
 	}
 
-    /// <summary>
-    /// Shows the player UI and locks the mouse cursor to the centre of the screen
-    /// </summary>
+    // Shows the in-game player UI and locks the mouse cursor to the centre of the screen
     void DisableMenuInput() {
         GameObject currentPlayer = objectManager.GetCurrentPlayer();
 
@@ -126,16 +158,4 @@ public class GameManager : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-
-    // Use this for initialization
-    void Start () {
-		objectManager = GetComponent<ObjectManager>();
-		menuManager = GetComponent<MenuManager>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (gameStarted && WinConditionMet())
-            WinGame();
-	}
 }
