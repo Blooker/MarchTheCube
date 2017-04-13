@@ -3,29 +3,39 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+/* Following square bracket tags force Unity to add instances of other classes
+ * to a GameObject when an instance of this class is added */
 [RequireComponent(typeof(CellAutoGenerator))]
 [RequireComponent(typeof(MarchingCubes))]
 [RequireComponent(typeof(ObjectPlacement))]
 
 public class MapGenerator : MonoBehaviour {
 
-    [SerializeField]
-    Vector3 mapSize;
-    [SerializeField]
-    int smoothingIterations;
+    // Defining variables
+    // Square bracket tags change how Unity displays attributes in the inspector
 
     [SerializeField]
-    float cubeSize;
+    private Vector3 mapSize;
+    [SerializeField]
+    private int smoothingIterations;
 
     [SerializeField]
-    string seed;
+    private float cubeSize;
 
-    CellAutoGenerator cellAutoGenerator;
-    MarchingCubes marchCubesGenerator;
-    ObjectPlacement objectPlacement;
+    [SerializeField]
+    private string seed;
 
-	// Use this for initialization
-	void Start () {
+    private CellAutoGenerator cellAutoGenerator;
+    private MarchingCubes marchCubesGenerator;
+    private ObjectPlacement objectPlacement;
+
+
+    /* ------------------
+     * BUILT-IN FUNCTIONS
+     * ------------------ */
+
+    // Use this for initialization
+    void Start () {
         cellAutoGenerator = GetComponent<CellAutoGenerator>();
         marchCubesGenerator = GetComponent<MarchingCubes>();
         objectPlacement = GetComponent<ObjectPlacement>();
@@ -38,83 +48,51 @@ public class MapGenerator : MonoBehaviour {
         GenerateMap();
 	}
 
-    /// <summary>
-    /// Generates an in-game map.
-    /// </summary>
+
+    /* ----------------
+     * CUSTOM FUNCTIONS
+     * ---------------- */
+
+    // Generates an entire in-game "cave" map (cell. auto generation, marching cubes and random object placement)
     public void GenerateMap () {
-        //Stopwatch stopwatch = new Stopwatch();
-        //stopwatch.Start();
-
 		cellAutoGenerator.GenerateCellAuto ( mapSize, smoothingIterations, seed );
-        //UnityEngine.Debug.Log(stopwatch.Elapsed.TotalMilliseconds);
-
         marchCubesGenerator.CreateCubeGrid( cellAutoGenerator.GetCellMap(), cubeSize );
-       // UnityEngine.Debug.Log(stopwatch.Elapsed.TotalMilliseconds);
         marchCubesGenerator.GenerateMesh();
-        //UnityEngine.Debug.Log(stopwatch.Elapsed.TotalMilliseconds);
 
         objectPlacement.LocateFloorTilesPos( marchCubesGenerator.GetCubeGrid(), cubeSize );
-        //UnityEngine.Debug.Log(stopwatch.Elapsed.TotalMilliseconds);
         objectPlacement.PlaceRandomObjects ( seed );
-        //UnityEngine.Debug.Log(stopwatch.Elapsed.TotalMilliseconds);
-
-       // stopwatch.Stop();
     }
 
-    #region Seed methods
 
-    /// <summary>
-    /// Used to set seed to a string value.
-    /// </summary>
-    /// <param name="_seed">The seed value.</param>
+    // Sets the map seed
     public void SetSeed(string _seed) {
         seed = _seed;
     }
 
-    /// <summary>
-    /// Gets the map's current seed.
-    /// </summary>
-    /// <returns>String seed</returns>
+    // Gets the current map seed
     public string GetSeed () {
         return seed;
     }
-    #endregion
 
-    #region Map size methods
 
-    /// <summary>
-    /// Used to set map size to a Vector3 value.
-    /// </summary>
-    /// <param name="_mapSize">The width, height and depth of the map.</param>
+    // Sets the map's size (width, height and depth)
     public void SetMapSize(Vector3 _mapSize) {
         mapSize = _mapSize;
     }
 
-    /// <summary>
-    /// Gets the current map size
-    /// </summary>
-    /// <returns>Vector3 map size</returns>
+    // Gets the current map size
     public Vector3 GetMapSize () {
         return mapSize;
     }
-    #endregion
 
-    #region Smoothing iterations methods
     
-    /// <summary>
-    /// Used to set smoothing iterations to an integer value.
-    /// </summary>
-    /// <param name="_smoothingIterations">The number of smoothing iterations.</param>
+    // Sets the number of smoothing iterations to be run on the cellular automaton
     public void SetSmoothingIterations(int _smoothingIterations) {
         smoothingIterations = _smoothingIterations;
     }
 
-    /// <summary>
-    /// Gets the number of smoothing iterations used on the cellular automaton.
-    /// </summary>
-    /// <returns>Integer smoothing iterations</returns>
+    // Gets the number of smoothing iterations to be run on the cellular automaton
     public int GetSmoothingIterations() {
         return smoothingIterations;
     }
-    #endregion
 }

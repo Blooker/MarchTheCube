@@ -1,9 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Class that contains the various look up tables containing mesh information for marching cubes
+/// </summary>
+
 public class LookupTables : MonoBehaviour {
 
     #region SFaces
+
+    // Standard faces, used in most cases
     public static int[] SFaces = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         0, 8, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -265,6 +271,8 @@ public class LookupTables : MonoBehaviour {
     #endregion
 
     #region AFaces
+
+    // Alternative faces, used in special cases where ambiguities arise
     public static int[] AFaces =
     {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -527,6 +535,8 @@ public class LookupTables : MonoBehaviour {
     #endregion
 
     #region ambigCases
+
+    // The cases of marching cubes where alternative faces should be used
     public static int[] ambigCases = {
         250,
         245,
