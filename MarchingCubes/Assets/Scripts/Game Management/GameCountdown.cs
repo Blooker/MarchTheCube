@@ -16,12 +16,12 @@ public class GameCountdown : MonoBehaviour {
     private static bool timerComplete = false;
 
     private float countdownTimer;
-    private int nextCounterChange;
 
     private bool timerDepleting;
 
     private PlayerUI playerUI;
     private GameManager gameManager;
+
 
     /* ------------------
      * BUILT-IN FUNCTIONS
@@ -78,7 +78,6 @@ public class GameCountdown : MonoBehaviour {
     public void ResetCountdown() {
         timerComplete = false;
         countdownTimer = timeToCountdown;
-        nextCounterChange = timeToCountdown - 1;
     }
 
     // Returns whether the initial game countdown has completed

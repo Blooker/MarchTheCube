@@ -1,20 +1,48 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Class for handling weapon behaviours
+/// </summary>
+
 public class WeaponManager : MonoBehaviour {
 
+    // Defining variables
+    // Square bracket tags change how Unity displays attributes in the inspector
+
     [SerializeField]
-    Weapon playerWeapon;
+    private Weapon playerWeapon;
 
-    bool shooting = false;
-    float shotInterval;
+    private bool shooting = false;
+    private float shotInterval;
 
-    Camera playerCam;
+    private Camera playerCam;
 
-    PlayerSound playerSound;
-    PlayerStats playerStats;
-    PlayerUI playerUI;
+    private PlayerSound playerSound;
+    private PlayerStats playerStats;
+    private PlayerUI playerUI;
 
+
+    /* ------------------
+     * BUILT-IN FUNCTIONS
+     * ------------------ */
+
+    // Use this for initialization
+    void Start() {
+        playerCam = GetComponent<PlayerController>().GetPlayerCam();
+        playerSound = GetComponent<PlayerSound>();
+        playerStats = GetComponent<PlayerStats>();
+        playerUI = GetComponent<PlayerUI>();
+
+        shotInterval = playerWeapon.fireRate;
+    }
+
+
+    /* ----------------
+     * CUSTOM FUNCTIONS
+     * ---------------- */
+
+    // Starts shooting the player's gun
     public void StartShooting () {
         if (playerStats.GetAmmoCount() > 0)
             shooting = true;
@@ -27,12 +55,16 @@ public class WeaponManager : MonoBehaviour {
         }
     }
 
+    // Stops shooting the player's gun
     public void StopShooting () {
         shooting = false;
         shotInterval = playerWeapon.fireRate;
     }
 
+    // Shoots a single shot from the player's gun
     public void Shoot() {
+
+        // If the player has ammo
         if (playerStats.GetAmmoCount() > 0) {
             playerSound.PlayPlayerSound(playerWeapon.gunSound);
 
@@ -54,21 +86,8 @@ public class WeaponManager : MonoBehaviour {
         }
     }
 
+    // Returns whether the player is shooting their gun
     public bool PlayerIsShooting () {
         return shooting;
     }
-
-    void Start () {
-        playerCam = GetComponent<PlayerController>().GetPlayerCam();
-        playerSound = GetComponent<PlayerSound>();
-        playerStats = GetComponent<PlayerStats>();
-        playerUI = GetComponent<PlayerUI>();
-
-        shotInterval = playerWeapon.fireRate;
-    }
-
-    // Update is called once per frame
-    void Update () {
-        //Debug.Log(shooting);
-	}
 }

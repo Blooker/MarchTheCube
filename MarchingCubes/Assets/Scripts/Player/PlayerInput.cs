@@ -1,24 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(PlayerController), typeof(WeaponManager))]
+/// <summary>
+/// Class that listens for player input (from a keyboard and mouse)
+/// </summary>
+
+/* Following square bracket tags force Unity to add instances of other classes
+ * to a GameObject when an instance of this class is added */
+[RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(WeaponManager))]
+
 public class PlayerInput : MonoBehaviour {
+
+    // Defining variables
 
     public GameManager gameManager;
 
-    PlayerController playerController;
-    WeaponManager weaponManager;
+    private PlayerController playerController;
+    private WeaponManager weaponManager;
 
-    float xMov, yMov, zMov;
-    float xRot, yRot;
+    private float xMov, yMov, zMov;
+    private float xRot, yRot;
 
-    bool leftMouse, rightMouse;
-    bool canMove, canLook , canHover, canShoot, canPause;
+    private bool leftMouse, rightMouse;
+    private bool canMove, canLook , canHover, canShoot, canPause;
 
-    bool pauseButton;
+    private bool pauseButton;
 
-	// Use this for initialization
-	void Start () {
+
+    /* ------------------
+     * BUILT-IN FUNCTIONS
+     * ------------------ */
+
+    // Use this for initialization
+    void Start () {
         playerController = GetComponent<PlayerController>();
         weaponManager = GetComponent<WeaponManager>();
 
@@ -38,7 +53,14 @@ public class PlayerInput : MonoBehaviour {
         UpdatePauseInput();
     }
 
+
+    /* ----------------
+     * CUSTOM FUNCTIONS
+     * ---------------- */
+
     #region Input update functions
+
+    // Checks for player movement input
     public void UpdateMoveInput () {
         if (!canMove) {
             xMov = 0;
@@ -53,6 +75,7 @@ public class PlayerInput : MonoBehaviour {
         playerController.ApplyMovement(xMov, zMov);
     }
 
+    // Checks for player hover input
     public void UpdateHoverInput() {
         if (!canHover) {
             yMov = 0;
@@ -63,6 +86,7 @@ public class PlayerInput : MonoBehaviour {
         playerController.ApplyHover(yMov);
     }
 
+    // Checks for player camera look input
     public void UpdateLookInput () {
         if (!canLook) {
             xRot = 0;
@@ -75,6 +99,7 @@ public class PlayerInput : MonoBehaviour {
         playerController.ApplyCamRotation(xRot, yRot);
     }
 
+    // Checks for player gun shooting input
     public void UpdateGunInput () {
         if (!canShoot) {
             leftMouse = false;
@@ -96,6 +121,7 @@ public class PlayerInput : MonoBehaviour {
         }
     }
 
+    // Checks for pause menu input
     public void UpdatePauseInput() {
         if (!canPause)
             return;
@@ -106,6 +132,7 @@ public class PlayerInput : MonoBehaviour {
             gameManager.TogglePause();
     }
 
+    // Enables all player input
     public void EnableAllInput () {
         AbleToMove(true);
         AbleToLook(true);
@@ -114,6 +141,7 @@ public class PlayerInput : MonoBehaviour {
         AbleToPause(true);
     }
 
+    // Disables all player input
     public void DisableAllInput() {
         AbleToMove(false);
         AbleToLook(false);
@@ -124,22 +152,27 @@ public class PlayerInput : MonoBehaviour {
     #endregion
 
     #region Accessor functions
+    // Sets whether the player can move
     public void AbleToMove (bool _canMove) {
         canMove = _canMove;
     }
 
+    // Sets whether the player can look
     public void AbleToLook(bool _canLook) {
         canLook = _canLook;
     }
 
+    // Sets whether the player can hover
     public void AbleToHover (bool _canHover) {
         canHover = _canHover;
     }
 
+    // Sets whether the player can shoot
     public void AbleToShoot (bool _canShoot) {
         canShoot = _canShoot;
     }
 
+    // Sets whether the player can pause
     public void AbleToPause (bool _canPause) {
         canPause = _canPause;
     }

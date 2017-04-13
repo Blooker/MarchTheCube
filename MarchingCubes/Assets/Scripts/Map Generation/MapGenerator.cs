@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+/// <summary>
+/// Class for handling map generation behaviour and starting the generation process
+/// </summary>
+
 /* Following square bracket tags force Unity to add instances of other classes
  * to a GameObject when an instance of this class is added */
 [RequireComponent(typeof(CellAutoGenerator))]

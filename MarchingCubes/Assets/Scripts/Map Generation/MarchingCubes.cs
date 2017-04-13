@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// Class for containing my implementation of the marching cubes algorithm
+/// Class for containing my implementation of the marching cubes algorithm.
 /// Generates a 3D mesh using an inputted cell grid array (cellular automaton)
 /// </summary>
 

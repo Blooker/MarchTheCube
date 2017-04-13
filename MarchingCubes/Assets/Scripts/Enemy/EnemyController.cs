@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// Class for handling enemy character attributes and behaviours (health, movement, etc.)
 /// </summary>
-/// 
+
 public class EnemyController : MonoBehaviour {
 
     // Defining variables

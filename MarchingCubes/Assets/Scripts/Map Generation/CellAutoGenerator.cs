@@ -8,12 +8,11 @@ using System;
 /// </summary>
 
 public class CellAutoGenerator : MonoBehaviour {
-    
+
     /* NOTE: The cell map is used later on in the marching cubes algorithm to generate the "cave" mesh.
      * Inside of the cell map array,
      * 1s represent physical walls and all empty space OUTSIDE of the play area,
-     * 0s represent empty space INSIDE the play area
-     */
+     * 0s represent empty space INSIDE the play area */
 
     // Defining variables
     // Square bracket tags change how Unity displays attributes in the inspector
@@ -34,8 +33,7 @@ public class CellAutoGenerator : MonoBehaviour {
      * ---------------- */
 
     /* Generates a cellular automaton with cells randomly set to on or off (1 or 0, respectively)
-     * Then applies a set number of smoothing iterations
-     */
+     * Then applies a set number of smoothing iterations */
     public void GenerateCellAuto(Vector3 size, int smoothingIterations, string seed) {
 
         width = (int)size.x;
@@ -56,8 +54,7 @@ public class CellAutoGenerator : MonoBehaviour {
 
     /* Fills 3D cellMap array with 1s and 0s to indicate on/off cells
      * If x, y or z pos is on the edge of the map, cell is always set to on
-     * Else, cell is randomly chosen using randomFillPercent to dictate the amount cells set to on
-     */
+     * Else, cell is randomly chosen using randomFillPercent to dictate the amount cells set to on */
     void RandomFillMap(string seed) {
         System.Random pseudoRandom = new System.Random(seed.GetHashCode());
 
@@ -77,8 +74,7 @@ public class CellAutoGenerator : MonoBehaviour {
 
     /* "Smooths" the random cellMap array
      * (makes each cell "more like its neighbours", pushing them outwards
-     * and creating curved shapes when turned into mesh later on)
-     */
+     * and creating curved shapes when turned into mesh later on) */
     void SmoothMap(int[,,] cellMapIn, int[,,] cellMapOut) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -158,8 +154,7 @@ public class CellAutoGenerator : MonoBehaviour {
     }
 
     /* Increments wallCount by 1 if specified cell is the border of the cellMap (always 1)
-     * Else, increments by whatever value the specified cell is (1 if on, 0 if off)
-     */
+     * Else, increments by whatever value the specified cell is (1 if on, 0 if off) */
     void IncrementIfValid (ref int wallCount, int[,,] cellMapIn, int nX, int nY, int nZ) {
         if (IsInMapRange(nX, nY, nZ)) {
             wallCount += cellMapIn[nX, nY, nZ];
@@ -170,8 +165,7 @@ public class CellAutoGenerator : MonoBehaviour {
 
     /* Gets all separate regions of the cell map (region is a closed off area unconnected to the others)
      * Then, removes all but the largest room (the play area in the game)
-     * This is to ensure that the player is able to access every area of the map
-     */
+     * This is to ensure that the player is able to access every area of the map */
     void RemoveAllButLargestRoom () {
         List<List<Coord>> mapRegions = GetRegions(0);
         List<Room> mapRooms = new List<Room>();

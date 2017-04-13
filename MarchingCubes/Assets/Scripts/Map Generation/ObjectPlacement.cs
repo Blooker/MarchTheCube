@@ -13,8 +13,7 @@ public class ObjectPlacement : MonoBehaviour {
      * anything that is placed into the game world, such as items, enemies, the player, etc.
      * 
      * This is not to be confused with a GameObject, which is a built in Unity class
-     * that acts as a base for all entities spawned in a scene
-     */ 
+     * that acts as a base for all entities spawned in a scene */
 
     // Defining variables
     // Square bracket tags change how Unity displays attributes in the inspector
@@ -30,8 +29,6 @@ public class ObjectPlacement : MonoBehaviour {
 
     [SerializeField]
     private int[] objectPlacementChances;
-
-    private bool playerSpawned = false;
 
     private List<Vector3> floorTilesPos = new List<Vector3>();
     private GameObject spawnPoint;

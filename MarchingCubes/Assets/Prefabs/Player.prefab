@@ -220,6 +220,8 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
+  m_AllowMSAA: 1
+  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -254,6 +256,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &3372788
 MeshFilter:
@@ -378,7 +381,7 @@ Light:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177138}
   m_Enabled: 1
-  serializedVersion: 7
+  serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
@@ -403,6 +406,8 @@ Light:
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!114 &11420036
@@ -416,6 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33cb69abf9234b94e87ccc9a28fd07d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
 --- !u!114 &11421710
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -456,8 +462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 297036fd6bb738140badbc819ac481f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camRotationLimit: 85
-  hoverTimeLimit: 3
+  camRotationLimit: 90
 --- !u!114 &11457178
 MonoBehaviour:
   m_ObjectHideFlags: 1

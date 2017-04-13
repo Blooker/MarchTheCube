@@ -1,29 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Class for handling the player character's physics behaviours (moving, hovering, etc.)
+/// </summary>
+
+/* Following square bracket tags force Unity to add instances of other classes
+ * to a GameObject when an instance of this class is added */
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMotor : MonoBehaviour {
 
-	private Vector3 moveVelocity, hoverVelocity, rotation = Vector3.zero;
+    // Defining variables
+    // Square bracket tags change how Unity displays attributes in the inspector
+
+    [SerializeField]
+    private float camRotationLimit = 90f;
+
+    private Vector3 moveVelocity, hoverVelocity, rotation = Vector3.zero;
 
     private float cameraRotationX = 0f;
     private float curCamRotationX = 0f;
 
     private PlayerStats playerStats;
 
-
-    [SerializeField]
-    private float camRotationLimit = 85f;
-
-    [SerializeField]
-    private float hoverTimeLimit = 5f;
-    private float curHoverTime = 0f;
-
 	private Rigidbody rb;
 
     private Camera cam;
 
-	void Start () {
+
+    /* ------------------
+     * BUILT-IN FUNCTIONS
+     * ------------------ */
+
+    // Use this for initialization
+    void Start () {
 		rb = GetComponent<Rigidbody> ();
         cam = GetComponent<PlayerController>().GetPlayerCam();
         playerStats = GetComponent<PlayerStats>();
@@ -36,34 +46,16 @@ public class PlayerMotor : MonoBehaviour {
         PerformRotation();
     }
 
-    /// Sets the player's velocity.
-    public void SetVelocity (Vector3 _moveVelocity) {
-		moveVelocity = _moveVelocity;
-	}
 
-    // Sets the player's hover velocity
-    public void SetHoverVelocity (Vector3 _hoverVelocity) {
-        hoverVelocity = _hoverVelocity;
-    }
-
-	/// Sets the player's rotation.
-	public void SetRotation (Vector3 _rotation) {
-		rotation = _rotation;
-	}
-
-    /// Sets the player's rotation.
-    public void SetCamRotation (float _cameraRotationX) {
-        cameraRotationX = _cameraRotationX;
-    }
-
-    public Camera GetPlayerCam () {
-        return cam;
-    }
+    /* ----------------
+     * CUSTOM FUNCTIONS
+     * ---------------- */
 
     // Performs movement along the X/Z axis based on player velocity.
     void PerformMovement() {
         rb.velocity = new Vector3(0, rb.velocity.y, 0);
-        //Debug.Log("moveVelocity: " + moveVelocity.ToString() + "\nrigid velocity: " + rb.velocity.ToString() + "moveVelocity != Vector3.zero: " + (moveVelocity != Vector3.zero).ToString());
+
+        // If movement velocity is being applied
         if (moveVelocity != Vector3.zero) {
             rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
         }
@@ -96,4 +88,29 @@ public class PlayerMotor : MonoBehaviour {
             cam.transform.localEulerAngles = new Vector3(curCamRotationX, 0, 0);
         }
 	}
+
+    /// Sets the player's movement velocity.
+    public void SetMoveVelocity(Vector3 _moveVelocity) {
+        moveVelocity = _moveVelocity;
+    }
+
+    // Sets the player's hover velocity
+    public void SetHoverVelocity(Vector3 _hoverVelocity) {
+        hoverVelocity = _hoverVelocity;
+    }
+
+    /// Sets the player character's rotation.
+    public void SetPlayerRotation(Vector3 _rotation) {
+        rotation = _rotation;
+    }
+
+    /// Sets the player camera's rotation.
+    public void SetCamRotation(float _cameraRotationX) {
+        cameraRotationX = _cameraRotationX;
+    }
+
+    // Gets the player's camera
+    public Camera GetPlayerCam() {
+        return cam;
+    }
 }
