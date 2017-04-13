@@ -4,31 +4,51 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-public class ObjectPlacement : MonoBehaviour {
+/// <summary>
+/// Class for handling the random placement of objects in the game world
+/// </summary>
 
-	[SerializeField]
-	GameObject player, playerCanvas;
+public class ObjectPlacement : MonoBehaviour {
+    /* NOTE: In this script and the ObjectManager script, I define objects as
+     * anything that is placed into the game world, such as items, enemies, the player, etc.
+     * 
+     * This is not to be confused with a GameObject, which is a built in Unity class
+     * that acts as a base for all entities spawned in a scene
+     */ 
+
+    // Defining variables
+    // Square bracket tags change how Unity displays attributes in the inspector
 
     [SerializeField]
-	GameObject[] objects;
+	private GameObject player, playerCanvas;
+
+    [SerializeField]
+    private GameObject[] objects;
 	
     [SerializeField]
-    ObjectManager objectManager;
+    private ObjectManager objectManager;
 
     [SerializeField]
-    int[] objectPlacementChances;
+    private int[] objectPlacementChances;
 
-    bool playerSpawned = false;
+    private bool playerSpawned = false;
 
-	List<Vector3> floorTilesPos = new List<Vector3>();
-    GameObject spawnPoint;
+    private List<Vector3> floorTilesPos = new List<Vector3>();
+    private GameObject spawnPoint;
 
+
+    /* ----------------
+     * CUSTOM FUNCTIONS
+     * ---------------- */
+
+    // Loops through all the floor tiles in the map and randomly places objects on them
     public void PlaceRandomObjects (string seed) {
         System.Random pseudoRandom = new System.Random (seed.GetHashCode());
 
 		for (int i = 0; i < floorTilesPos.Count; i++) {
             GameObject objectToPlace = null;
             
+            // If unable to place object, loop again until valid object is obtained
             do {
                 objectToPlace = ObjectFromPercentage(pseudoRandom.Next(0, 4000));
             } while ( !ObjectManager.CanPlaceObject ( objectToPlace ) );
@@ -40,7 +60,7 @@ public class ObjectPlacement : MonoBehaviour {
 
                 ObjectManager.AddToLevelObjects(spawnedObject);
 
-				if (spawnedObject.name == "SpawnPoint(Clone)" && spawnPoint == null)
+				if (spawnedObject.tag == "SpawnPoint" && spawnPoint == null)
 					spawnPoint = spawnedObject;
 			}
 		}
@@ -48,6 +68,7 @@ public class ObjectPlacement : MonoBehaviour {
         SpawnPlayer();
     }
 
+    // Spawns the player character and sets a reference to them in all enemies in the level
     void SpawnPlayer () {
         Vector3 playerPos = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y + 2f, spawnPoint.transform.position.z);
         GameObject newPlayer = Instantiate(player, playerPos, Quaternion.identity) as GameObject;
@@ -70,13 +91,14 @@ public class ObjectPlacement : MonoBehaviour {
         playerUI.SetEnemyCounter(enemiesInLevel.Count);
     }
 
-    GameObject ObjectFromPercentage(int chance) {
+    // Takes a random number and returns an object. The random number is used to determine which type of object is returned
+    GameObject ObjectFromPercentage(int randomNum) {
         GameObject objectToPlace = null;
 
         for (int i = 0; i < objectPlacementChances.Length; i++) {
 
             if ( i == 0 ) {
-                if (chance >= 0 && chance < objectPlacementChances[i]) {
+                if (randomNum >= 0 && randomNum < objectPlacementChances[i]) {
                     objectToPlace = objects[i];
                     break;
                 }
@@ -84,7 +106,7 @@ public class ObjectPlacement : MonoBehaviour {
                 objectToPlace = null;
                 break;
             } else {
-                if ( chance >= objectPlacementChances.Take(i).Sum() && chance < objectPlacementChances.Take(i+1).Sum() ) {
+                if ( randomNum >= objectPlacementChances.Take(i).Sum() && randomNum < objectPlacementChances.Take(i+1).Sum() ) {
                     objectToPlace = objects[i];
                     break;
                 }
@@ -95,11 +117,7 @@ public class ObjectPlacement : MonoBehaviour {
         return objectToPlace;
     }
 
-    #region Floor tile positions methods
-
-    /// <summary>
-    /// Gets positions of all floor tiles in the map and adds them to a list of floor tiles.
-    /// </summary>
+    // Gets positions of all floor tiles in the map and adds them to a list of floor tile positions.
     public void LocateFloorTilesPos(CubeGrid cubeGrid, float cubeSize) {
 		List<Vector3> _floorTilesPos = new List<Vector3>();
 		_floorTilesPos.Clear ();
@@ -119,21 +137,13 @@ public class ObjectPlacement : MonoBehaviour {
 		SetFloorTilesPos (_floorTilesPos);
 	}
 	
-	/// <summary>
-	/// Returns list of all the floor tiles in the map.
-	/// </summary>
-	/// <returns>Vector3 list</returns>
+	// Gets list of positions of all floor tiles in the map.
 	public List<Vector3> GetFloorTilesPos () {
 		return floorTilesPos;
 	}
 	
+    // Sets list of positions of all floor tiles in the map
 	public void SetFloorTilesPos (List<Vector3> _floorTilesPos) {
 		floorTilesPos = _floorTilesPos;
-	}
-	#endregion
-
-	// Use this for initialization
-	void Start () {
-
 	}
 }
